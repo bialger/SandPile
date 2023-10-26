@@ -1,1 +1,0 @@
-add_library(lib_vector STATIC coordinates_vector.cpp coordinates_vector.hpp)

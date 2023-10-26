@@ -10,7 +10,7 @@ struct Point {
   int16_t y;
 };
 
-class CoordinatesVector {
+class CoordinatesField {
   private:
     static constexpr int16_t kMaxLimit = std::numeric_limits<int16_t>::max() / 3;
     static constexpr int16_t kMinLimit = std::numeric_limits<int16_t>::min() / 3;
@@ -24,9 +24,8 @@ class CoordinatesVector {
     size_t GetIndexByCoordinates(Point point) const;
     bool FitPoint(Point size);
   public:
-
-    CoordinatesVector();
-    ~CoordinatesVector();
+    CoordinatesField();
+    ~CoordinatesField();
     void Resize(Point size);
     void Trim();
     void SetElementByCoordinates(Point point, uint64_t element);

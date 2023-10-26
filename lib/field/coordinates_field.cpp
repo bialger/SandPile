@@ -1,9 +1,9 @@
-#include "coordinates_vector.hpp"
+#include "coordinates_field.hpp"
 
 #include <iostream>
 #include <cstring>
 
-CoordinatesVector::CoordinatesVector() {
+CoordinatesField::CoordinatesField() {
   max_point_ = {0, 0};
   min_point_ = {0, 0};
   positive_capacity_ = {2, 2};
@@ -12,17 +12,17 @@ CoordinatesVector::CoordinatesVector() {
   std::memset(data_, 0, sizeof(uint64_t) * 25);
 }
 
-CoordinatesVector::~CoordinatesVector() {
+CoordinatesField::~CoordinatesField() {
   delete[] data_;
 }
 
-size_t CoordinatesVector::GetIndexByCoordinates(Point point) const {
+size_t CoordinatesField::GetIndexByCoordinates(Point point) const {
   return static_cast<size_t>(point.x - negative_capacity_.x) *
          static_cast<size_t>(positive_capacity_.y - negative_capacity_.y + 1) +
          static_cast<size_t>(point.y - negative_capacity_.y);
 }
 
-bool CoordinatesVector::FitPoint(Point size) {
+bool CoordinatesField::FitPoint(Point size) {
   bool do_resize = false;
 
   if (size.x > positive_capacity_.x) {
@@ -60,7 +60,7 @@ bool CoordinatesVector::FitPoint(Point size) {
   return do_resize;
 }
 
-void CoordinatesVector::Resize(Point size) {
+void CoordinatesField::Resize(Point size) {
   Point old_positive_capacity = positive_capacity_;
   Point old_negative_capacity = negative_capacity_;
 
@@ -88,7 +88,7 @@ void CoordinatesVector::Resize(Point size) {
   data_ = new_data;
 }
 
-void CoordinatesVector::Trim() {
+void CoordinatesField::Trim() {
   Point old_positive_capacity = positive_capacity_;
   Point old_negative_capacity = negative_capacity_;
   positive_capacity_ = max_point_;
@@ -116,7 +116,7 @@ void CoordinatesVector::Trim() {
   data_ = new_data;
 }
 
-void CoordinatesVector::SetElementByCoordinates(Point point, uint64_t element) {
+void CoordinatesField::SetElementByCoordinates(Point point, uint64_t element) {
   Resize(point);
 
   if (point.x > max_point_.x) {
@@ -134,14 +134,14 @@ void CoordinatesVector::SetElementByCoordinates(Point point, uint64_t element) {
   data_[GetIndexByCoordinates(point)] = element;
 }
 
-uint64_t CoordinatesVector::GetElementByCoordinates(Point point) {
+uint64_t CoordinatesField::GetElementByCoordinates(Point point) {
   return data_[GetIndexByCoordinates(point)];
 }
 
-Point CoordinatesVector::GetMaxPoint() {
+Point CoordinatesField::GetMaxPoint() {
   return max_point_;
 }
 
-Point CoordinatesVector::GetMinPoint() {
+Point CoordinatesField::GetMinPoint() {
   return min_point_;
 }

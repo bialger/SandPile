@@ -11,6 +11,6 @@ message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
 add_subdirectory(basic)
 add_subdirectory(bmp_writer)
+add_subdirectory(field)
 add_subdirectory(parser)
 add_subdirectory(sand_pile)
-add_subdirectory(vector)

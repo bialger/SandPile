@@ -36,7 +36,7 @@ add_executable(${PROJECT_NAME} main.cpp)
 
 target_link_libraries(${PROJECT_NAME} lib_basic
         lib_bmp_writer
+        lib_field
         lib_parser
         lib_sand_pile
-        lib_vector
 )
