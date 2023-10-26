@@ -29,7 +29,7 @@ bool CoordinatesField::FitPoint(Point size) {
     positive_capacity_.x = size.x;
     do_resize = true;
 
-    if (negative_capacity_.x < kMaxLimit) {
+    if (positive_capacity_.x < kMaxLimit) {
       positive_capacity_.x *= kExpansionMultiplier;
     }
   } else if (size.x < negative_capacity_.x) {
@@ -45,7 +45,7 @@ bool CoordinatesField::FitPoint(Point size) {
     positive_capacity_.y = size.y;
     do_resize = true;
 
-    if (negative_capacity_.y < kMaxLimit) {
+    if (positive_capacity_.y < kMaxLimit) {
       positive_capacity_.y *= kExpansionMultiplier;
     }
   } else if (size.y < negative_capacity_.y) {
