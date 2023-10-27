@@ -26,12 +26,17 @@ int SetConsoleTextAttribute(int a, int b);
 
 int64_t IntFromString(char* int_literal, int64_t limit, int8_t base);
 
+/** \n The i64toa function converts an integer to a string in a specified base.
+ * Full analogy to the C function _i64toa in Windows. */
+
+char* i64toa(int64_t value, char* buffer, int32_t base);
+
 bool IsWindows();
 
-/** \n The code validates the validity of a filename based on rules specific to
- * Windows. The filename should consist of alphanumeric characters, backslashes,
+/** \n The code validates the validity of a file_ based on rules specific to
+ * Windows. The file_ should consist of alphanumeric characters, backslashes,
  * periods, hyphens, and spaces. Additionally, the code checks for consecutive
- * slashes in the filename, which is also considered invalid. */
+ * slashes in the file_, which is also considered invalid. */
 
 bool IsValidFilename(char* pre_filename);
 

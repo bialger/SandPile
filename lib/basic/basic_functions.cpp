@@ -39,6 +39,42 @@ int64_t IntFromString(char* int_literal, int64_t limit, int8_t base) {
   return result;
 }
 
+char* i64toa(int64_t value, char *str, int32_t base) {
+  uint64_t modulus_value;
+  int32_t negative;
+  char buffer[65];
+  char *pos;
+  int32_t digit;
+
+  if (value < 0 && base == 10) {
+    negative = 1;
+    modulus_value = static_cast<uint64_t>(-value);
+  } else {
+    negative = 0;
+    modulus_value = static_cast<uint64_t>(value);
+  }
+
+  pos = &buffer[64];
+  *pos = '\0';
+
+  do {
+    digit = static_cast<int>(modulus_value % static_cast<uint64_t>(base));
+    modulus_value = modulus_value / static_cast<uint64_t>(base);
+    if (digit < 10) {
+      *--pos = static_cast<char>('0' + digit);
+    } else {
+      *--pos = static_cast<char>('a' + digit - 10);
+    }
+  } while (modulus_value != 0L);
+
+  if (negative) {
+    *--pos = '-';
+  }
+
+  memcpy(str, pos, static_cast<size_t>(&buffer[64] - pos + 1));
+  return str;
+}
+
 bool IsWindows() {
   return
 #if defined _WIN32 || defined _WIN64 || defined __CYGWIN__
@@ -63,7 +99,7 @@ bool IsValidFilename(char* pre_filename) {
   }
 
   /* This Windows-specific check is important because different code pages can
-   * corrupt non-alphanumeric filename, but UNIX-like systems (like MacOS or
+   * corrupt non-alphanumeric file_, but UNIX-like systems (like MacOS or
    * Linux) handle unicode correctly. */
 
   for (uint64_t position = 0; position < filename_length - 1; ++position) {
