@@ -12,17 +12,41 @@ CoordinatesField::CoordinatesField() {
   std::memset(data_, 0, sizeof(uint64_t) * 25);
 }
 
+CoordinatesField::CoordinatesField(const CoordinatesField &other) {
+  max_point_ = other.max_point_;
+  min_point_ = other.min_point_;
+  positive_capacity_ = other.positive_capacity_;
+  negative_capacity_ = other.negative_capacity_;
+  size_t size = static_cast<size_t>(positive_capacity_.x - negative_capacity_.x + 1) *
+                static_cast<size_t>(positive_capacity_.y - negative_capacity_.y + 1);
+  data_ = new uint64_t[size];
+  std::memcpy(data_, other.data_, sizeof(uint64_t) * size);
+}
+
+CoordinatesField &CoordinatesField::operator=(const CoordinatesField &other) {
+  max_point_ = other.max_point_;
+  min_point_ = other.min_point_;
+  positive_capacity_ = other.positive_capacity_;
+  negative_capacity_ = other.negative_capacity_;
+  size_t size = static_cast<size_t>(positive_capacity_.x - negative_capacity_.x + 1) *
+                static_cast<size_t>(positive_capacity_.y - negative_capacity_.y + 1);
+  data_ = new uint64_t[size];
+  std::memcpy(data_, other.data_, sizeof(uint64_t) * size);
+
+  return *this;
+}
+
 CoordinatesField::~CoordinatesField() {
   delete[] data_;
 }
 
-size_t CoordinatesField::GetIndexByCoordinates(Point point) const {
+size_t CoordinatesField::GetIndexByCoordinates(const Point& point) const {
   return static_cast<size_t>(point.x - negative_capacity_.x) *
          static_cast<size_t>(positive_capacity_.y - negative_capacity_.y + 1) +
          static_cast<size_t>(point.y - negative_capacity_.y);
 }
 
-bool CoordinatesField::FitPoint(Point size) {
+bool CoordinatesField::FitPoint(const Point& size) {
   bool do_resize = false;
 
   if (size.x > positive_capacity_.x) {
@@ -60,7 +84,7 @@ bool CoordinatesField::FitPoint(Point size) {
   return do_resize;
 }
 
-void CoordinatesField::Resize(Point size) {
+void CoordinatesField::Resize(const Point& size) {
   Point old_positive_capacity = positive_capacity_;
   Point old_negative_capacity = negative_capacity_;
 
@@ -116,7 +140,7 @@ void CoordinatesField::Trim() {
   data_ = new_data;
 }
 
-void CoordinatesField::SetElementByCoordinates(Point point, uint64_t element) {
+void CoordinatesField::SetElementByCoordinates(const Point& point, uint64_t element) {
   Resize(point);
 
   if (point.x > max_point_.x) {
@@ -134,7 +158,7 @@ void CoordinatesField::SetElementByCoordinates(Point point, uint64_t element) {
   data_[GetIndexByCoordinates(point)] = element;
 }
 
-uint64_t CoordinatesField::GetElementByCoordinates(Point point) {
+uint64_t CoordinatesField::GetElementByCoordinates(const Point& point) {
   return data_[GetIndexByCoordinates(point)];
 }
 

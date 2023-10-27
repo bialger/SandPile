@@ -21,15 +21,17 @@ class CoordinatesField {
     Point negative_capacity_{};
     uint64_t* data_;
 
-    size_t GetIndexByCoordinates(Point point) const;
-    bool FitPoint(Point size);
+    size_t GetIndexByCoordinates(const Point& point) const;
+    bool FitPoint(const Point& size);
   public:
     CoordinatesField();
+    CoordinatesField(const CoordinatesField& other);
+    CoordinatesField& operator=(const CoordinatesField& other);
     ~CoordinatesField();
-    void Resize(Point size);
+    void Resize(const Point& size);
     void Trim();
-    void SetElementByCoordinates(Point point, uint64_t element);
-    uint64_t GetElementByCoordinates(Point point);
+    void SetElementByCoordinates(const Point& point, uint64_t element);
+    uint64_t GetElementByCoordinates(const Point& point);
     Point GetMaxPoint();
     Point GetMinPoint();
 };
