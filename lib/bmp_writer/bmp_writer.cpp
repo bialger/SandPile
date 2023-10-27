@@ -98,17 +98,17 @@ void BmpWriter::WriteHeader() {
   color_table[0] = 0xFF;
   color_table[1] = 0xFF;
   color_table[2] = 0xFF;
-  color_table[3] = 0xFF;
+  color_table[3] = 0;
 
   color_table[4] = 0;
   color_table[5] = 0xFF;
   color_table[6] = 0;
-  color_table[7] = 0xFF;
+  color_table[7] = 0;
 
   color_table[8] = 0;
   color_table[9] = 0xFF;
   color_table[10] = 0xFF;
-  color_table[11] = 0xFF;
+  color_table[11] = 0;
 
   color_table[12] = 0xFF;
   color_table[13] = 0;
