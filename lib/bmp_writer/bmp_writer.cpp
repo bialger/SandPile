@@ -16,20 +16,21 @@ BmpWriter::~BmpWriter() {
   delete[] data_;
 }
 
-void BmpWriter::ExportSandPile(char*dirname, CoordinatesField& sand_pile_field,
-                               int64_t iteration) {
+void BmpWriter::ExportField(char* dirname, CoordinatesField& field,
+                               int64_t number) {
   char* new_filename = new char[strlen(dirname) + 1 + 8 + 1 + 64 + 4 + 1];
-  char temp[65];
+  char suffix[65];
   memset(new_filename, 0, strlen(dirname) + 1 + 8 + 1 + 64 + 4 + 1);
-  memset(temp, 0, 65);
-  i64toa(iteration, temp, 10);
+  memset(suffix, 0, 65);
+  i64toa(number, suffix, 10);
   strcpy(new_filename, dirname);
+
   if (dirname[strlen(dirname) - 1] != '/') {
     strcat(new_filename, "/");
   }
-  strcat(new_filename, "output");
-  strcat(new_filename, "_");
-  strcat(new_filename, temp);
+
+  strcat(new_filename, "output_");
+  strcat(new_filename, suffix);
   strcat(new_filename, ".bmp");
   file_.open(new_filename, std::ios::out | std::ios::binary);
 
@@ -38,10 +39,8 @@ void BmpWriter::ExportSandPile(char*dirname, CoordinatesField& sand_pile_field,
     return;
   }
 
-  width_ = static_cast<uint16_t>(sand_pile_field.GetMaxPoint().x -
-                                 sand_pile_field.GetMinPoint().x + 1);
-  height_ = static_cast<uint16_t>(sand_pile_field.GetMaxPoint().y -
-                                  sand_pile_field.GetMinPoint().y + 1);
+  width_ = static_cast<uint16_t>(field.GetMaxPoint().x - field.GetMinPoint().x + 1);
+  height_ = static_cast<uint16_t>(field.GetMaxPoint().y - field.GetMinPoint().y + 1);
   padding_amount_ = static_cast<uint8_t>(4 - (width_ / 2 + width_ % 2) % 4) % 4;
   file_size_ = kBmpInfoHeaderSize + kFileHeaderSize + kColorTableSize +
                static_cast<uint32_t>((width_ / 2 + width_ % 2) * height_) +
@@ -53,33 +52,25 @@ void BmpWriter::ExportSandPile(char*dirname, CoordinatesField& sand_pile_field,
                        (kFileHeaderSize + kBmpInfoHeaderSize + kColorTableSize));
   size_t counter = 0;
 
-  for (int16_t y = sand_pile_field.GetMinPoint().y; y <= sand_pile_field.GetMaxPoint().y; ++y) {
-    for (int16_t x = sand_pile_field.GetMinPoint().x; x <= sand_pile_field.GetMaxPoint().x; ++x) {
+  for (int16_t y = field.GetMinPoint().y; y <= field.GetMaxPoint().y; ++y) {
+    for (int16_t x = field.GetMinPoint().x; x <= field.GetMaxPoint().x; ++x) {
       Point current_point = {x, y};
+      uint64_t current_element = field.GetElementByCoordinates(current_point);
       int8_t bit_shift = (counter % 2 == 0) ? 4 : 0;
-      if (sand_pile_field.GetElementByCoordinates(current_point) == 0) {
-        data_[counter / 2] |= 0 << bit_shift;
-      } else if (sand_pile_field.GetElementByCoordinates(current_point) == 1) {
-        data_[counter / 2] |= 1 << bit_shift;
-      } else if (sand_pile_field.GetElementByCoordinates(current_point) == 2) {
-        data_[counter / 2] |= 2 << bit_shift;
-      } else if (sand_pile_field.GetElementByCoordinates(current_point) == 3) {
-        data_[counter / 2] |= 3 << bit_shift;
+      if (current_element < 4) {
+        data_[counter / 2] |= static_cast<uint8_t>(current_element << bit_shift);
       } else {
-        data_[counter / 2] |= 7 << bit_shift;
+        data_[counter / 2] |= 4 << bit_shift;
       }
+
       ++counter;
     }
 
-    if (counter % 2 != 0) {
-      ++counter;
-    }
-
-    counter += padding_amount_ * 2;
+    counter += padding_amount_ * 2 + (counter % 2);
   }
 
   WriteHeader();
-  WritePixels();
+  WritePixels(field);
 
   delete[] new_filename;
 }
@@ -185,7 +176,33 @@ void BmpWriter::WriteHeader() {
   file_.write(reinterpret_cast<char*>(color_table), kColorTableSize);
 }
 
-void BmpWriter::WritePixels() {
-  file_.write(reinterpret_cast<char*>(data_),
-              file_size_ - (kFileHeaderSize + kBmpInfoHeaderSize + kColorTableSize));
+void BmpWriter::WritePixels(CoordinatesField& field) {
+  uint32_t counter = 0;
+  size_t byte_string_size = static_cast<size_t>(width_ / 2 + width_ % 2 +
+                                                padding_amount_);
+  uint8_t* byte_string = new uint8_t[byte_string_size];
+  memset(byte_string, 0, byte_string_size);
+  uint8_t shift;
+
+  for (int16_t y = field.GetMinPoint().y; y <= field.GetMaxPoint().y; ++y) {
+    for (int16_t x = field.GetMinPoint().x; x <= field.GetMaxPoint().x; ++x) {
+      Point current_point = {x, y};
+      uint64_t current_element = field.GetElementByCoordinates(current_point);
+      shift = (counter % 2 == 0) ? 4 : 0;
+      if (current_element < 4) {
+        byte_string[counter / 2] |= static_cast<uint8_t>(current_element << shift);
+      } else {
+        byte_string[counter / 2] |= 4 << shift;
+      }
+
+      ++counter;
+    }
+
+    file_.write(reinterpret_cast<char*>(byte_string),
+                static_cast<ptrdiff_t>(byte_string_size));
+    memset(byte_string, 0, byte_string_size);
+    counter = 0;
+  }
+
+  delete[] byte_string;
 }

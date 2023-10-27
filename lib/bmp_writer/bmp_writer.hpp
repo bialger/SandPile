@@ -20,12 +20,11 @@ private:
   std::ofstream file_;
 
   void WriteHeader();
-  void WritePixels();
+  void WritePixels(CoordinatesField& field);
 
 public:
   BmpWriter();
-  void ExportSandPile(char*dirname, CoordinatesField& sand_pile_field,
-                      int64_t iteration);
+  void ExportField(char* dirname, CoordinatesField& field, int64_t number);
   ~BmpWriter();
 };
 
