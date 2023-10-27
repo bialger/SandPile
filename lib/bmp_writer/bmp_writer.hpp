@@ -16,7 +16,6 @@ private:
   uint16_t height_;
   uint8_t padding_amount_;
   uint32_t file_size_;
-  uint8_t* data_;
   std::ofstream file_;
 
   void WriteHeader();
@@ -25,7 +24,6 @@ private:
 public:
   BmpWriter();
   void ExportField(char* dirname, CoordinatesField& field, int64_t number);
-  ~BmpWriter();
 };
 
 #endif // BMP_WRITER_HPP

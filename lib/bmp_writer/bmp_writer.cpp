@@ -4,16 +4,11 @@
 #include <cstring>
 
 BmpWriter::BmpWriter() {
-  width_ = 1;
-  height_ = 1;
-  padding_amount_ = 3;
-  file_size_ = 1;
-  data_ = new uint8_t[1];
+  width_ = 0;
+  height_ = 0;
+  padding_amount_ = 4;
+  file_size_ = 0;
   file_ = std::ofstream{};
-}
-
-BmpWriter::~BmpWriter() {
-  delete[] data_;
 }
 
 void BmpWriter::ExportField(char* dirname, CoordinatesField& field,
@@ -45,29 +40,6 @@ void BmpWriter::ExportField(char* dirname, CoordinatesField& field,
   file_size_ = kBmpInfoHeaderSize + kFileHeaderSize + kColorTableSize +
                static_cast<uint32_t>((width_ / 2 + width_ % 2) * height_) +
                padding_amount_ * height_;
-  delete[] data_;
-  data_ = new uint8_t[file_size_ -
-                      (kFileHeaderSize + kBmpInfoHeaderSize + kColorTableSize)];
-  memset(data_, 0, file_size_ -
-                       (kFileHeaderSize + kBmpInfoHeaderSize + kColorTableSize));
-  size_t counter = 0;
-
-  for (int16_t y = field.GetMinPoint().y; y <= field.GetMaxPoint().y; ++y) {
-    for (int16_t x = field.GetMinPoint().x; x <= field.GetMaxPoint().x; ++x) {
-      Point current_point = {x, y};
-      uint64_t current_element = field.GetElementByCoordinates(current_point);
-      int8_t bit_shift = (counter % 2 == 0) ? 4 : 0;
-      if (current_element < 4) {
-        data_[counter / 2] |= static_cast<uint8_t>(current_element << bit_shift);
-      } else {
-        data_[counter / 2] |= 4 << bit_shift;
-      }
-
-      ++counter;
-    }
-
-    counter += padding_amount_ * 2 + (counter % 2);
-  }
 
   WriteHeader();
   WritePixels(field);
