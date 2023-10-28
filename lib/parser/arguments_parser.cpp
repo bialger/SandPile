@@ -7,8 +7,8 @@
 ArgumentsParser::ArgumentsParser() {
   input_file_ = kError;
   output_directory_ = kError;
-  max_iterations_ = 0;
-  frequency_ = 0;
+  max_iterations_ = std::numeric_limits<uint64_t>::max();
+  frequency_ = std::numeric_limits<uint64_t>::max();
   write_tsv_ = false;
   provide_help_ = false;
   input_file_status_ = ArgumentParsingStatus::kNoArgument;
