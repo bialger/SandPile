@@ -1,8 +1,8 @@
 #include "sand_pile.hpp"
 #include "lib/basic/basic_functions.hpp"
-#include "lib/basic/queue.h"
 #include "lib/bmp_writer/bmp_writer.hpp"
 #include "lib/field/coordinates_field.hpp"
+#include "lib/field/queue.hpp"
 
 #include <charconv>
 #include <cstring>

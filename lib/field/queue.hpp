@@ -1,7 +1,7 @@
-#ifndef SANDPILE_QUEUE_H
-#define SANDPILE_QUEUE_H
+#ifndef SANDPILE_QUEUE_HPP
+#define SANDPILE_QUEUE_HPP
 
-#include "lib/field/coordinates_field.hpp"
+#include "coordinates_field.hpp"
 
 #include <cstddef>
 #include <cstdint>
@@ -23,4 +23,4 @@ public:
   bool IsEmpty() const;
 };
 
-#endif // SANDPILE_QUEUE_H
+#endif // SANDPILE_QUEUE_HPP
