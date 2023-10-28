@@ -1,12 +1,14 @@
 #ifndef SANDPILE_QUEUE_H
 #define SANDPILE_QUEUE_H
 
+#include "lib/field/coordinates_field.hpp"
+
 #include <cstddef>
 #include <cstdint>
 
 class Queue {
 private:
-  uint64_t* data_;
+  Point* data_;
   size_t size_;
   size_t front_;
   size_t capacity_;
@@ -15,9 +17,9 @@ public:
   Queue(const Queue& other);
   Queue& operator=(const Queue& other);
   ~Queue();
-  void Push(uint64_t element);
-  uint64_t Pop();
-  uint64_t Peek();
+  void Push(Point element);
+  Point Pop();
+  Point Peek();
   bool IsEmpty() const;
 };
 

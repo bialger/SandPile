@@ -4,26 +4,26 @@
 #include <limits>
 
 Queue::Queue() {
-  data_ = new uint64_t[1];
+  data_ = new Point[1];
   size_ = 0;
   front_ = 0;
   capacity_ = 1;
 }
 
 Queue::Queue(const Queue &other) {
-  data_ = new uint64_t[other.capacity_];
+  data_ = new Point[other.capacity_];
   size_ = other.size_;
   front_ = other.front_;
   capacity_ = other.capacity_;
-  std::memcpy(data_, other.data_, sizeof(uint64_t) * size_);
+  std::memcpy(data_, other.data_, sizeof(Point) * size_);
 }
 
 Queue &Queue::operator=(const Queue &other) {
-  data_ = new uint64_t[other.capacity_];
+  data_ = new Point[other.capacity_];
   size_ = other.size_;
   front_ = other.front_;
   capacity_ = other.capacity_;
-  std::memcpy(data_, other.data_, sizeof(uint64_t) * size_);
+  std::memcpy(data_, other.data_, sizeof(Point) * size_);
 
   return *this;
 }
@@ -32,7 +32,7 @@ Queue::~Queue() {
   delete[] data_;
 }
 
-void Queue::Push(uint64_t element) {
+void Queue::Push(Point element) {
   if (size_ == capacity_) {
     capacity_ *= 2;
 
@@ -40,9 +40,9 @@ void Queue::Push(uint64_t element) {
       capacity_ = std::numeric_limits<uint32_t>::max();
     }
 
-    uint64_t* new_data = new uint64_t[capacity_];
-    std::memset(new_data, 0, sizeof(uint64_t) * capacity_);
-    std::memcpy(new_data, data_, sizeof(uint64_t) * size_);
+    Point* new_data = new Point[capacity_];
+    std::memset(new_data, 0, sizeof(Point) * capacity_);
+    std::memcpy(new_data, data_, sizeof(Point) * size_);
     delete[] data_;
     data_ = new_data;
   }
@@ -51,12 +51,12 @@ void Queue::Push(uint64_t element) {
   ++size_;
 }
 
-uint64_t Queue::Pop() {
+Point Queue::Pop() {
   --size_;
   return data_[front_++];
 }
 
-uint64_t Queue::Peek() {
+Point Queue::Peek() {
   return data_[front_];
 }
 

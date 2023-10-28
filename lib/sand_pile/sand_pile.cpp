@@ -71,17 +71,14 @@ bool SandPile::Collapse() {
   for (int16_t y = pile_.GetMaxPoint().y; y >= pile_.GetMinPoint().y; --y) {
     for (int16_t x = pile_.GetMinPoint().x; x <= pile_.GetMaxPoint().x; ++x) {
       if (pile_.GetElementByCoordinates({x, y}) >= 4) {
-        unstable.Push((static_cast<uint64_t>(x) << 16) +
-                      static_cast<uint64_t>(y));
+        unstable.Push({x, y});
         has_unstable = true;
       }
     }
   }
 
   while (!unstable.IsEmpty()) {
-    const uint64_t compressed_point = unstable.Pop();
-    const Point unstable_point = {static_cast<int16_t>(compressed_point >> 16),
-                            static_cast<int16_t>(compressed_point)};
+    const Point unstable_point = unstable.Pop();
     int16_t x = unstable_point.x;
     int16_t y = unstable_point.y;
     pile_.SetElementByCoordinates(unstable_point,pile_.GetElementByCoordinates(
