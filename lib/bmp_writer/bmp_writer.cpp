@@ -44,6 +44,7 @@ void BmpWriter::ExportField(char* dirname, CoordinatesField& field,
   WriteHeader();
   WritePixels(field);
 
+  file_.close();
   delete[] new_filename;
 }
 
