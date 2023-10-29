@@ -8,6 +8,9 @@
 struct Point {
   int16_t x;
   int16_t y;
+
+  Point() : x(0), y(0) {}
+  Point(int16_t x, int16_t y) : x(x), y(y) {}
 };
 
 class CoordinatesField {
@@ -15,10 +18,10 @@ class CoordinatesField {
   static constexpr int16_t kMaxLimit = std::numeric_limits<int16_t>::max() / 3;
   static constexpr int16_t kMinLimit = std::numeric_limits<int16_t>::min() / 3;
   static constexpr int16_t kExpansionMultiplier = 2;
-  Point max_point_{};
-  Point min_point_{};
-  Point positive_capacity_{};
-  Point negative_capacity_{};
+  Point max_point_;
+  Point min_point_;
+  Point positive_capacity_;
+  Point negative_capacity_;
   uint64_t* data_;
 
   size_t GetIndexByCoordinates(const Point& point) const;
