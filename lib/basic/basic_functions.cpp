@@ -41,16 +41,16 @@ int64_t IntFromString(char* int_literal, int64_t limit, int8_t base) {
 
 char* i64toa(int64_t value, char* str, int32_t base) {
   uint64_t modulus_value;
-  int32_t negative;
+  bool negative;
   char buffer[65];
   char* pos;
   int32_t digit;
 
   if (value < 0 && base == 10) {
-    negative = 1;
+    negative = true;
     modulus_value = static_cast<uint64_t>(-value);
   } else {
-    negative = 0;
+    negative = false;
     modulus_value = static_cast<uint64_t>(value);
   }
 
