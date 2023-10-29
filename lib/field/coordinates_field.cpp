@@ -24,6 +24,10 @@ CoordinatesField::CoordinatesField(const CoordinatesField& other) {
 }
 
 CoordinatesField& CoordinatesField::operator=(const CoordinatesField& other) {
+  if (this != &other) {
+    return *this;
+  }
+
   max_point_ = other.max_point_;
   min_point_ = other.min_point_;
   positive_capacity_ = other.positive_capacity_;

@@ -19,6 +19,10 @@ Queue::Queue(const Queue& other) {
 }
 
 Queue& Queue::operator=(const Queue& other) {
+  if (this != &other) {
+    return *this;
+  }
+
   data_ = new Point[other.capacity_];
   size_ = other.size_;
   front_ = other.front_;
