@@ -10,7 +10,7 @@ Queue::Queue() {
   capacity_ = 1;
 }
 
-Queue::Queue(const Queue &other) {
+Queue::Queue(const Queue& other) {
   data_ = new Point[other.capacity_];
   size_ = other.size_;
   front_ = other.front_;
@@ -18,7 +18,7 @@ Queue::Queue(const Queue &other) {
   std::memcpy(data_, other.data_, sizeof(Point) * size_);
 }
 
-Queue &Queue::operator=(const Queue &other) {
+Queue& Queue::operator=(const Queue& other) {
   data_ = new Point[other.capacity_];
   size_ = other.size_;
   front_ = other.front_;

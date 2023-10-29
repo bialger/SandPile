@@ -7,12 +7,12 @@
 #include <cstdint>
 
 class Queue {
-private:
+ private:
   Point* data_;
   size_t size_;
   size_t front_;
   size_t capacity_;
-public:
+ public:
   Queue();
   Queue(const Queue& other);
   Queue& operator=(const Queue& other);

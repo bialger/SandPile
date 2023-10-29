@@ -3,7 +3,6 @@
 
 #include <cstdint>
 
-
 #if defined _WIN32 || defined _WIN64 || defined __CYGWIN__
 #include <Windows.h>
 #else
@@ -12,7 +11,6 @@
 int GetStdHandle(int a);
 int SetConsoleTextAttribute(int a, int b);
 #endif
-
 
 /** \n The IntFromString function takes a string representing an integer literal
  * and converts it to an int64_t value. It supports different number bases,
@@ -33,10 +31,10 @@ char* i64toa(int64_t value, char* buffer, int32_t base);
 
 bool IsWindows();
 
-/** \n The code validates the validity of a file_ based on rules specific to
- * Windows. The file_ should consist of alphanumeric characters, backslashes,
+/** \n The code validates the validity of a filename based on rules specific to
+ * Windows. The filename should consist of alphanumeric characters, backslashes,
  * periods, hyphens, and spaces. Additionally, the code checks for consecutive
- * slashes in the file_, which is also considered invalid. */
+ * slashes in the filename, which is also considered invalid. */
 
 bool IsValidFilename(char* pre_filename);
 

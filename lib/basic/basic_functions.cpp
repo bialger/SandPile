@@ -20,8 +20,8 @@ int64_t IntFromString(char* int_literal, int64_t limit, int8_t base) {
 
   int32_t save_errno = errno;
   errno = 0;
-  char *end;
-  int64_t result = std::strtoll(int_literal,&end, base);
+  char* end;
+  int64_t result = std::strtoll(int_literal, &end, base);
 
   if (end == int_literal || *end != '\0' ||
       ((result == LLONG_MIN || result == LLONG_MAX) && errno == ERANGE)) {
@@ -39,11 +39,11 @@ int64_t IntFromString(char* int_literal, int64_t limit, int8_t base) {
   return result;
 }
 
-char* i64toa(int64_t value, char *str, int32_t base) {
+char* i64toa(int64_t value, char* str, int32_t base) {
   uint64_t modulus_value;
   int32_t negative;
   char buffer[65];
-  char *pos;
+  char* pos;
   int32_t digit;
 
   if (value < 0 && base == 10) {
@@ -78,7 +78,7 @@ char* i64toa(int64_t value, char *str, int32_t base) {
 bool IsWindows() {
   return
 #if defined _WIN32 || defined _WIN64 || defined __CYGWIN__
-      true
+    true
 #else
       false
 #endif
@@ -92,14 +92,14 @@ bool IsValidFilename(char* pre_filename) {
     for (uint64_t position = 2; position < filename_length; ++position) {
       char current = pre_filename[position];
       if (!(std::isalnum(current) || current == '\\' || current == '.' ||
-            current == '-' || current == ' ')) {
+          current == '-' || current == ' ')) {
         return false;
       }
     }
   }
 
   /* This Windows-specific check is important because different code pages can
-   * corrupt non-alphanumeric file_, but UNIX-like systems (like MacOS or
+   * corrupt non-alphanumeric filenames, but UNIX-like systems (like MacOS or
    * Linux) handle unicode correctly. */
 
   for (uint64_t position = 0; position < filename_length - 1; ++position) {
@@ -133,6 +133,6 @@ void PrintHelp() { // TODO: write full help page
  * return their input parameters. */
 
 #if not (defined _WIN32 || defined _WIN64 || defined __CYGWIN__)
-int GetStdHandle(int a) {return a;}
-int SetConsoleTextAttribute(int a, int b) {return a + b;}
+int GetStdHandle(int a) { return a; }
+int SetConsoleTextAttribute(int a, int b) { return a + b; }
 #endif

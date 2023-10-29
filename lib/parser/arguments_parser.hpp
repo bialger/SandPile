@@ -10,7 +10,7 @@ enum class ArgumentParsingStatus {
 };
 
 class ArgumentsParser {
-private:
+ private:
   constexpr static char* const kError = nullptr;
   char* input_file_;
   char* output_directory_;
@@ -25,10 +25,10 @@ private:
   ArgumentParsingStatus write_tsv_status_;
   ArgumentParsingStatus provide_help_status_;
 
-  void ValidateInputFile(char** argv, int32_t argc, char*value,
-                         char*pre_filename, int32_t position);
-  void ValidateOutputDirectory(char** argv, int32_t argc, char*value,
-                               char*pre_dirname, int32_t position);
+  void ValidateInputFile(char** argv, int32_t argc, char* value,
+                         char* pre_filename, int32_t position);
+  void ValidateOutputDirectory(char** argv, int32_t argc, char* value,
+                               char* pre_dirname, int32_t position);
   void ValidateMaxIterations(char* candidate, char* value, bool isLast);
   void ValidateFrequency(char* candidate, char* value, bool isLast);
   void ValidateWriteTsv(char* candidate);
@@ -41,7 +41,7 @@ private:
 
   int8_t HandleErrors();
 
-public:
+ public:
   ArgumentsParser();
   int8_t ParseArguments(char** argv, int32_t argc);
   char* GetInputFile();

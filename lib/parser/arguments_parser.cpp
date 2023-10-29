@@ -47,7 +47,7 @@ int8_t ArgumentsParser::HandleErrors() {
   /* Changes the color of the console output to red if not running
    * on Windows. */
 
-  if(IsWindows()) {
+  if (IsWindows()) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, 12);
   }
@@ -88,7 +88,7 @@ int8_t ArgumentsParser::HandleErrors() {
     exitCode = 1;
   }
 
-  if(IsWindows()) {
+  if (IsWindows()) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, 15);
   }
@@ -132,8 +132,8 @@ void ArgumentsParser::ValidateInputFile(char** argv, int32_t argc,
       }
 
       while (!is_real_file && current < argc - 1 &&
-             input_file_status_ != ArgumentParsingStatus::kBrokenArgument &&
-             strlen(input_file_) < 256) {
+          input_file_status_ != ArgumentParsingStatus::kBrokenArgument &&
+          strlen(input_file_) < 256) {
         size_t len = strlen(input_file_) + strlen(argv[current + 1]) + 2;
         char* new_candidate = new char[len];
         std::memset(new_candidate, 0, len);
@@ -220,8 +220,8 @@ void ArgumentsParser::ValidateOutputDirectory(char** argv, int32_t argc,
       }
 
       while (!is_directory && current < argc - 1 &&
-             output_directory_status_ != ArgumentParsingStatus::kBrokenArgument &&
-             strlen(output_directory_) < 256) {
+          output_directory_status_ != ArgumentParsingStatus::kBrokenArgument &&
+          strlen(output_directory_) < 256) {
         size_t len = strlen(output_directory_) + strlen(argv[current + 1]) + 2;
         char* new_candidate = new char[len];
         std::memset(new_candidate, 0, len);
@@ -268,7 +268,7 @@ void ArgumentsParser::ValidateOutputDirectory(char** argv, int32_t argc,
   }
 }
 
-void ArgumentsParser::ValidateMaxIterations(char* candidate, char *value,
+void ArgumentsParser::ValidateMaxIterations(char* candidate, char* value,
                                             bool isLast) {
   bool isShort = strcmp(candidate, "-m") == 0 && !isLast;
   bool isLong = strncmp(candidate, "--max-iter=", 11) == 0;
@@ -292,7 +292,7 @@ void ArgumentsParser::ValidateMaxIterations(char* candidate, char *value,
   }
 }
 
-void ArgumentsParser::ValidateFrequency(char* candidate, char *value,
+void ArgumentsParser::ValidateFrequency(char* candidate, char* value,
                                         bool isLast) {
   bool isShort = strcmp(candidate, "-f") == 0 && !isLast;
   bool isLong = strncmp(candidate, "--freq=", 7) == 0;

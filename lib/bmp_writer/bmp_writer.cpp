@@ -12,7 +12,7 @@ BmpWriter::BmpWriter() {
 }
 
 void BmpWriter::ExportField(char* dirname, CoordinatesField& field,
-                               int64_t number) {
+                            int64_t number) {
   char* new_filename = new char[strlen(dirname) + 1 + 8 + 1 + 64 + 4 + 1];
   char suffix[65];
   memset(new_filename, 0, strlen(dirname) + 1 + 8 + 1 + 64 + 4 + 1);
@@ -38,8 +38,8 @@ void BmpWriter::ExportField(char* dirname, CoordinatesField& field,
   height_ = static_cast<uint16_t>(field.GetMaxPoint().y - field.GetMinPoint().y + 1);
   padding_amount_ = static_cast<uint8_t>(4 - (width_ / 2 + width_ % 2) % 4) % 4;
   file_size_ = kBmpInfoHeaderSize + kFileHeaderSize + kColorTableSize +
-               static_cast<uint32_t>((width_ / 2 + width_ % 2) * height_) +
-               padding_amount_ * height_;
+      static_cast<uint32_t>((width_ / 2 + width_ % 2) * height_) +
+      padding_amount_ * height_;
 
   WriteHeader();
   WritePixels(field);
@@ -152,7 +152,7 @@ void BmpWriter::WriteHeader() {
 void BmpWriter::WritePixels(CoordinatesField& field) {
   uint32_t counter = 0;
   size_t byte_string_size = static_cast<size_t>(width_ / 2 + width_ % 2 +
-                                                padding_amount_);
+      padding_amount_);
   uint8_t* byte_string = new uint8_t[byte_string_size];
   memset(byte_string, 0, byte_string_size);
   uint8_t shift;
