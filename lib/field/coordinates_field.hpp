@@ -22,9 +22,10 @@ class CoordinatesField {
   void Resize(const Point& size);
   void Trim();
   void SetElementByCoordinates(const Point& point, uint64_t element);
-  uint64_t GetElementByCoordinates(const Point& point);
-  Point GetMaxPoint();
-  Point GetMinPoint();
+  uint64_t GetElementByCoordinates(const Point& point) const;
+  uint64_t& operator[](const Point& point) const;
+  Point GetMaxPoint() const;
+  Point GetMinPoint() const;
 
  private:
   static constexpr int16_t kMaxLimit = std::numeric_limits<int16_t>::max() / 3;

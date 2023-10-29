@@ -162,14 +162,18 @@ void CoordinatesField::SetElementByCoordinates(const Point& point, uint64_t elem
   data_[GetIndexByCoordinates(point)] = element;
 }
 
-uint64_t CoordinatesField::GetElementByCoordinates(const Point& point) {
+uint64_t CoordinatesField::GetElementByCoordinates(const Point& point) const {
   return data_[GetIndexByCoordinates(point)];
 }
 
-Point CoordinatesField::GetMaxPoint() {
+uint64_t& CoordinatesField::operator[](const Point& point) const {
+  return data_[GetIndexByCoordinates(point)];
+}
+
+Point CoordinatesField::GetMaxPoint() const {
   return max_point_;
 }
 
-Point CoordinatesField::GetMinPoint() {
+Point CoordinatesField::GetMinPoint() const {
   return min_point_;
 }
