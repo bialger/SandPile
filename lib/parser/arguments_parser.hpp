@@ -10,6 +10,17 @@ enum class ArgumentParsingStatus {
 };
 
 class ArgumentsParser {
+ public:
+  ArgumentsParser();
+  int8_t ParseArguments(char** argv, int32_t argc);
+  char* GetInputFile();
+  char* GetOutputDirectory();
+  uint64_t GetMaxIterations() const;
+  uint64_t GetFrequency() const;
+  bool GetWriteTsv() const;
+  bool GetProvideHelp() const;
+  ~ArgumentsParser();
+
  private:
   constexpr static char* const kError = nullptr;
   char* input_file_;
@@ -25,10 +36,8 @@ class ArgumentsParser {
   ArgumentParsingStatus write_tsv_status_;
   ArgumentParsingStatus provide_help_status_;
 
-  void ValidateInputFile(char** argv, int32_t argc, char* value,
-                         char* pre_filename, int32_t position);
-  void ValidateOutputDirectory(char** argv, int32_t argc, char* value,
-                               char* pre_dirname, int32_t position);
+  void ValidateInputFile(char** argv, int32_t argc, char* value, char* pre_filename, int32_t position);
+  void ValidateOutputDirectory(char** argv, int32_t argc, char* value, char* pre_dirname, int32_t position);
   void ValidateMaxIterations(char* candidate, char* value, bool is_last);
   void ValidateFrequency(char* candidate, char* value, bool is_last);
   void ValidateWriteTsv(char* candidate);
@@ -40,17 +49,6 @@ class ArgumentsParser {
    * are appropriately addressed and reported to the user. */
 
   int8_t HandleErrors();
-
- public:
-  ArgumentsParser();
-  int8_t ParseArguments(char** argv, int32_t argc);
-  char* GetInputFile();
-  char* GetOutputDirectory();
-  uint64_t GetMaxIterations() const;
-  uint64_t GetFrequency() const;
-  bool GetWriteTsv() const;
-  bool GetProvideHelp() const;
-  ~ArgumentsParser();
 };
 
 #endif // ARGUMENTS_PARSER_HPP

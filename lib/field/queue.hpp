@@ -7,11 +7,6 @@
 #include <cstdint>
 
 class Queue {
- private:
-  Point* data_;
-  size_t size_;
-  size_t front_;
-  size_t capacity_;
  public:
   Queue();
   Queue(const Queue& other);
@@ -21,6 +16,12 @@ class Queue {
   Point Pop();
   Point Peek();
   bool IsEmpty() const;
+
+ private:
+  Point* data_;
+  size_t size_;
+  size_t front_;
+  size_t capacity_;
 };
 
 #endif // SANDPILE_QUEUE_HPP

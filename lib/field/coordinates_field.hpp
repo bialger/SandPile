@@ -14,6 +14,18 @@ struct Point {
 };
 
 class CoordinatesField {
+ public:
+  CoordinatesField();
+  CoordinatesField(const CoordinatesField& other);
+  CoordinatesField& operator=(const CoordinatesField& other);
+  ~CoordinatesField();
+  void Resize(const Point& size);
+  void Trim();
+  void SetElementByCoordinates(const Point& point, uint64_t element);
+  uint64_t GetElementByCoordinates(const Point& point);
+  Point GetMaxPoint();
+  Point GetMinPoint();
+
  private:
   static constexpr int16_t kMaxLimit = std::numeric_limits<int16_t>::max() / 3;
   static constexpr int16_t kMinLimit = std::numeric_limits<int16_t>::min() / 3;
@@ -26,17 +38,6 @@ class CoordinatesField {
 
   size_t GetIndexByCoordinates(const Point& point) const;
   bool FitPoint(const Point& size);
- public:
-  CoordinatesField();
-  CoordinatesField(const CoordinatesField& other);
-  CoordinatesField& operator=(const CoordinatesField& other);
-  ~CoordinatesField();
-  void Resize(const Point& size);
-  void Trim();
-  void SetElementByCoordinates(const Point& point, uint64_t element);
-  uint64_t GetElementByCoordinates(const Point& point);
-  Point GetMaxPoint();
-  Point GetMinPoint();
 };
 
 #endif // COORDINATES_VECTOR_HPP

@@ -8,6 +8,10 @@
 #include <iostream>
 
 class BmpWriter {
+ public:
+  BmpWriter();
+  void ExportField(char* dirname, CoordinatesField& field, int64_t number);
+
  private:
   static constexpr uint32_t kFileHeaderSize = 14;
   static constexpr uint32_t kBmpInfoHeaderSize = 40;
@@ -20,10 +24,6 @@ class BmpWriter {
 
   void WriteHeader();
   void WritePixels(CoordinatesField& field);
-
- public:
-  BmpWriter();
-  void ExportField(char* dirname, CoordinatesField& field, int64_t number);
 };
 
 #endif // BMP_WRITER_HPP
