@@ -100,15 +100,15 @@ int8_t ArgumentsParser::HandleErrors() {
 void ArgumentsParser::ValidateInputFile(char** argv, int32_t argc,
                                         char* candidate, char* value,
                                         int32_t position) {
-  bool isShort = strcmp(candidate, "-i") == 0 && position != argc - 1;
-  bool isLong = strncmp(candidate, "--input=", 8) == 0;
+  bool is_short = strcmp(candidate, "-i") == 0 && position != argc - 1;
+  bool is_long = strncmp(candidate, "--input=", 8) == 0;
 
-  if (!(isShort || isLong) ||
+  if (!(is_short || is_long) ||
       input_file_status_ == ArgumentParsingStatus::kSuccess) {
     return;
   }
 
-  char* pre_filename = isShort ? value : candidate + 8;
+  char* pre_filename = is_short ? value : candidate + 8;
 
   if (strlen(pre_filename) > 1) {
     if (strncmp(pre_filename, "./", 2) == 0 || strncmp(pre_filename, "C:", 2) == 0 ||
@@ -188,15 +188,15 @@ void ArgumentsParser::ValidateInputFile(char** argv, int32_t argc,
 void ArgumentsParser::ValidateOutputDirectory(char** argv, int32_t argc,
                                               char* candidate, char* value,
                                               int32_t position) {
-  bool isShort = strcmp(candidate, "-o") == 0 && position != argc - 1;
-  bool isLong = strncmp(candidate, "--output=", 9) == 0;
+  bool is_short = strcmp(candidate, "-o") == 0 && position != argc - 1;
+  bool is_long = strncmp(candidate, "--output=", 9) == 0;
 
-  if (!(isShort || isLong) ||
+  if (!(is_short || is_long) ||
       output_directory_status_ == ArgumentParsingStatus::kSuccess) {
     return;
   }
 
-  char* pre_dirname = isShort ? value : candidate + 9;
+  char* pre_dirname = is_short ? value : candidate + 9;
 
   if (strlen(pre_dirname) > 1) {
     if (strncmp(pre_dirname, "./", 2) == 0 || strncmp(pre_dirname, "C:", 2) == 0 ||
@@ -269,12 +269,12 @@ void ArgumentsParser::ValidateOutputDirectory(char** argv, int32_t argc,
 }
 
 void ArgumentsParser::ValidateMaxIterations(char* candidate, char* value,
-                                            bool isLast) {
-  bool isShort = strcmp(candidate, "-m") == 0 && !isLast;
-  bool isLong = strncmp(candidate, "--max-iter=", 11) == 0;
+                                            bool is_last) {
+  bool is_short = strcmp(candidate, "-m") == 0 && !is_last;
+  bool is_long = strncmp(candidate, "--max-iter=", 11) == 0;
 
-  if (isShort || isLong) {
-    char* pre_max_iterations = isShort ? value : candidate + 11;
+  if (is_short || is_long) {
+    char* pre_max_iterations = is_short ? value : candidate + 11;
 
     if (pre_max_iterations[0] == '\'' || pre_max_iterations[0] == '"') {
       ++pre_max_iterations;
@@ -293,12 +293,12 @@ void ArgumentsParser::ValidateMaxIterations(char* candidate, char* value,
 }
 
 void ArgumentsParser::ValidateFrequency(char* candidate, char* value,
-                                        bool isLast) {
-  bool isShort = strcmp(candidate, "-f") == 0 && !isLast;
-  bool isLong = strncmp(candidate, "--freq=", 7) == 0;
+                                        bool is_last) {
+  bool is_short = strcmp(candidate, "-f") == 0 && !is_last;
+  bool is_long = strncmp(candidate, "--freq=", 7) == 0;
 
-  if (isShort || isLong) {
-    char* pre_frequency = isShort ? value : candidate + 7;
+  if (is_short || is_long) {
+    char* pre_frequency = is_short ? value : candidate + 7;
 
     if (pre_frequency[0] == '\'' || pre_frequency[0] == '"') {
       ++pre_frequency;

@@ -29,8 +29,8 @@ class ArgumentsParser {
                          char* pre_filename, int32_t position);
   void ValidateOutputDirectory(char** argv, int32_t argc, char* value,
                                char* pre_dirname, int32_t position);
-  void ValidateMaxIterations(char* candidate, char* value, bool isLast);
-  void ValidateFrequency(char* candidate, char* value, bool isLast);
+  void ValidateMaxIterations(char* candidate, char* value, bool is_last);
+  void ValidateFrequency(char* candidate, char* value, bool is_last);
   void ValidateWriteTsv(char* candidate);
   void ValidateProvideHelp(char* candidate);
 
