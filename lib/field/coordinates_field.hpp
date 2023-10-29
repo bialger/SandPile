@@ -8,9 +8,6 @@
 struct Point {
   int16_t x;
   int16_t y;
-
-  Point() : x(0), y(0) {}
-  Point(int16_t x, int16_t y) : x(x), y(y) {}
 };
 
 class CoordinatesField {

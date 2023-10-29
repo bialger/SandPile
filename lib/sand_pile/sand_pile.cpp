@@ -70,7 +70,7 @@ bool SandPile::Collapse() {
 
   for (int16_t y = pile_.GetMaxPoint().y; y >= pile_.GetMinPoint().y; --y) {
     for (int16_t x = pile_.GetMinPoint().x; x <= pile_.GetMaxPoint().x; ++x) {
-      if (pile_.GetElementByCoordinates({x, y}) >= 4) {
+      if (pile_[{x, y}] >= 4) {
         unstable.Push({x, y});
         has_unstable = true;
       }
@@ -81,15 +81,13 @@ bool SandPile::Collapse() {
     const Point unstable_point = unstable.Pop();
     int16_t x = unstable_point.x;
     int16_t y = unstable_point.y;
-    pile_.SetElementByCoordinates(unstable_point, pile_.GetElementByCoordinates(
-        unstable_point) - 4);
+    pile_[unstable_point] = pile_[unstable_point] - 4;
     ++x;
 
     if (pile_.GetMaxPoint().x == unstable_point.x) {
       pile_.SetElementByCoordinates({x, y}, 1);
     } else {
-      pile_.SetElementByCoordinates({x, y}, pile_.GetElementByCoordinates(
-          {x, y}) + 1);
+      pile_[{x, y}] += 1;
     }
 
     x -= 2;
@@ -97,8 +95,7 @@ bool SandPile::Collapse() {
     if (pile_.GetMinPoint().x == unstable_point.x) {
       pile_.SetElementByCoordinates({x, y}, 1);
     } else {
-      pile_.SetElementByCoordinates({x, y}, pile_.GetElementByCoordinates(
-          {x, y}) + 1);
+      pile_[{x, y}] += 1;
     }
 
     ++x;
@@ -107,8 +104,7 @@ bool SandPile::Collapse() {
     if (pile_.GetMaxPoint().y == unstable_point.y) {
       pile_.SetElementByCoordinates({x, y}, 1);
     } else {
-      pile_.SetElementByCoordinates({x, y}, pile_.GetElementByCoordinates(
-          {x, y}) + 1);
+      pile_[{x, y}] += 1;
     }
 
     y -= 2;
@@ -116,8 +112,7 @@ bool SandPile::Collapse() {
     if (pile_.GetMinPoint().y == unstable_point.y) {
       pile_.SetElementByCoordinates({x, y}, 1);
     } else {
-      pile_.SetElementByCoordinates({x, y}, pile_.GetElementByCoordinates(
-          {x, y}) + 1);
+      pile_[{x, y}] += 1;
     }
   }
 
