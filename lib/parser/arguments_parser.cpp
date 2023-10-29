@@ -23,16 +23,16 @@ int8_t ArgumentsParser::ParseArguments(char** argv, int32_t argc) {
   for (int32_t i = 1; i < argc; ++i) {
     char* candidate = argv[i];
     char* value = kError;
-    bool isLast = i == argc - 1;
+    bool is_last = (i == argc - 1);
 
-    if (!isLast) {
+    if (!is_last) {
       value = argv[i + 1];
     }
 
     ValidateInputFile(argv, argc, candidate, value, i);
     ValidateOutputDirectory(argv, argc, candidate, value, i);
-    ValidateMaxIterations(candidate, value, isLast);
-    ValidateFrequency(candidate, value, isLast);
+    ValidateMaxIterations(candidate, value, is_last);
+    ValidateFrequency(candidate, value, is_last);
     ValidateWriteTsv(candidate);
     ValidateProvideHelp(candidate);
   }
