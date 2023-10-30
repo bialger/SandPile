@@ -49,12 +49,9 @@ void BmpWriter::ExportField(char* dirname, CoordinatesField& field,
 }
 
 void BmpWriter::WriteHeader() {
-  uint8_t bmp_header[kFileHeaderSize];
-  uint8_t dib_header[kBmpInfoHeaderSize];
-  uint8_t color_table[kColorTableSize];
-  memset(bmp_header, 0, kFileHeaderSize);
-  memset(dib_header, 0, kBmpInfoHeaderSize);
-  memset(color_table, 0, kColorTableSize);
+  uint8_t bmp_header[kFileHeaderSize]{};
+  uint8_t dib_header[kBmpInfoHeaderSize]{};
+  uint8_t color_table[kColorTableSize]{};
 
   /* Standard BMP header */
 
