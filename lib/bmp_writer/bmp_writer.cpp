@@ -2,6 +2,7 @@
 #include "lib/basic/basic_functions.hpp"
 
 #include <cstring>
+#include <filesystem>
 
 BmpWriter::BmpWriter() {
   width_ = 0;
@@ -13,24 +14,17 @@ BmpWriter::BmpWriter() {
 
 void BmpWriter::ExportField(char* dirname, CoordinatesField& field,
                             int64_t number) {
-  char* new_filename = new char[strlen(dirname) + 1 + 8 + 1 + 64 + 4 + 1];
   char suffix[65];
-  memset(new_filename, 0, strlen(dirname) + 1 + 8 + 1 + 64 + 4 + 1);
-  memset(suffix, 0, 65);
   i64toa(number, suffix, 10);
-  strcpy(new_filename, dirname);
+  std::filesystem::path path(dirname);
+  path.append("output_");
+  path.concat(suffix);
+  path.concat(".bmp");
 
-  if (dirname[strlen(dirname) - 1] != '/') {
-    strcat(new_filename, "/");
-  }
-
-  strcat(new_filename, "output_");
-  strcat(new_filename, suffix);
-  strcat(new_filename, ".bmp");
-  file_.open(new_filename, std::ios::out | std::ios::binary);
+  file_.open(path, std::ios::out | std::ios::binary);
 
   if (!file_.is_open()) {
-    std::cout << "Can't open file: " << new_filename << std::endl;
+    std::cout << "Can't open file: " << path.native() << std::endl;
     return;
   }
 
@@ -45,7 +39,6 @@ void BmpWriter::ExportField(char* dirname, CoordinatesField& field,
   WritePixels(field);
 
   file_.close();
-  delete[] new_filename;
 }
 
 void BmpWriter::WriteHeader() {
