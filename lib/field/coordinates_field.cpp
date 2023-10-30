@@ -8,8 +8,10 @@ CoordinatesField::CoordinatesField() {
   min_point_ = {0, 0};
   positive_capacity_ = {2, 2};
   negative_capacity_ = {-2, -2};
-  data_ = new uint64_t[25];
-  std::memset(data_, 0, sizeof(uint64_t) * 25);
+  size_t size = static_cast<size_t>(positive_capacity_.x - negative_capacity_.x + 1) *
+      static_cast<size_t>(positive_capacity_.y - negative_capacity_.y + 1);
+  data_ = new uint64_t[size];
+  std::memset(data_, 0, sizeof(uint64_t) * size);
 }
 
 CoordinatesField::CoordinatesField(const CoordinatesField& other) {
@@ -127,9 +129,7 @@ void CoordinatesField::Trim() {
 
   uint64_t* new_data = new uint64_t[new_size];
 
-  for (size_t i = 0; i < new_size; i++) {
-    new_data[i] = 0;
-  }
+  std::memset(new_data, 0, sizeof(uint64_t) * new_size);
 
   for (int16_t y = max_point_.y; y >= min_point_.y; --y) {
     for (int16_t x = min_point_.x; x <= max_point_.x; ++x) {
