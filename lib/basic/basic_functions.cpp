@@ -114,16 +114,31 @@ bool IsValidFilename(char* pre_filename) {
   return true;
 }
 
-void PrintHelp() { // TODO: write full help page
-  std::cout << "SandPile model version 0.1 by bialger.\n";
-  std::cout << "SandPile model help page.\n";
-  std::cout << "Usage: SandPile [OPTIONS]...\n";
-  std::cout << "SandPile saves the state of the model to a file.\n";
-  std::cout << "SandPile does not support cyrillic filenames on Windows.\n";
-  std::cout << "\nOPTIONS:\n";
-  std::cout << "\t-h or --help\t\t\t\t\t";
-  std::cout << "print this help page.\n";
-  std::cout << std::endl;
+void PrintHelp() {
+  std::cout << "SandPile model version 0.1 by bialger.\n"
+  << "SandPile model help page.\n"
+  << "Usage: SandPile [OPTIONS]...\n"
+  << "SandPile models an Abelian sandpile model. "
+  << "It saves the state of the model to a file.\n"
+  << "SandPile does not support cyrillic filenames on Windows.\n"
+  << "\nOPTIONS:\n"
+  << "-i FILE or --input=FILE\t\t\t\t\t"
+  << "sets FILE as the input file.\n"
+  << "-o DIR or --output=DIR\t\t\t\t\t"
+  << "sets DIR as the output directory.\n"
+  << "-m NUMBER or --max-iter=NUMBER\t\t\t\t"
+  << "sets NUMBER as the maximum number of iterations.\n"
+  << "\t\t\t\t\t\t\t"
+  << "If not specified, runs until the model stabilizes.\n"
+  << "-f NUMBER or --freq=NUMBER\t\t\t\t"
+  << "sets NUMBER as the frequency of output.\n"
+  << "\t\t\t\t\t\t\t"
+  << "If not specified, make output at the beginning and at the end of work.\n"
+  << "-w or --write-tsv\t\t\t\t\t"
+  << "write output in TSV format too.\n"
+  << "\t-h or --help\t\t\t\t\t"
+  << "print this help page.\n"
+  << std::endl;
 }
 
 /* The code provides dummy function definitions for Windows console-related
