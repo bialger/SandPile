@@ -3,6 +3,7 @@
 #include <climits>
 #include <cstring>
 #include <iostream>
+#include <filesystem>
 
 int64_t IntFromString(char* int_literal, int64_t limit, int8_t base) {
   if (strncmp(int_literal, "0b", 2) == 0) {
@@ -112,6 +113,16 @@ bool IsValidFilename(char* pre_filename) {
   }
 
   return true;
+}
+
+bool IsRegularFile(char* filename) {
+  std::filesystem::path path(filename);
+  return std::filesystem::is_regular_file(path);
+}
+
+bool IsDirectory(char* dirname) {
+  std::filesystem::path path(dirname);
+  return std::filesystem::is_directory(path);
 }
 
 void PrintHelp() {

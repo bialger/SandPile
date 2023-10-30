@@ -38,6 +38,14 @@ bool IsWindows();
 
 bool IsValidFilename(char* pre_filename);
 
+/** \n This function is a wrapper for the std::filesystem::is_regular_file function. */
+
+bool IsRegularFile(char* filename);
+
+/** \n This function is a wrapper for the std::filesystem::is_directory function. */
+
+bool IsDirectory(char* dirname);
+
 /** \n The code implementation of the PrintHelp function displays a detailed help
  * page for the SandPile, explaining its usage and the various
  * command-line options available. The information is formatted in a structured
