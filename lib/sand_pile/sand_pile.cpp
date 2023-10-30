@@ -20,6 +20,10 @@ void SandPile::BeginCollapsing(char* filename, char* dirname,
     TsvHandler::ExportTSV(dirname, pile_, 0);
   }
 
+  if (frequency == 0) {
+    return;
+  }
+
   while (current_iter_ < max_iterations && Collapse()) {
     ++current_iter_;
 
