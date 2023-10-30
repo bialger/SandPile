@@ -6,7 +6,7 @@
 class SandPile {
  public:
   SandPile();
-  void BeginCollapsing(char* filename, char* dirname, uint64_t max_iterations, uint64_t frequency);
+  void BeginCollapsing(char* filename, char* dirname, uint64_t max_iterations, uint64_t frequency, bool write_tsv);
 
  private:
   CoordinatesField pile_;

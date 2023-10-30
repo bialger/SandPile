@@ -14,7 +14,7 @@ BmpWriter::BmpWriter() {
 
 void BmpWriter::ExportField(char* dirname, CoordinatesField& field,
                             int64_t number) {
-  char suffix[65];
+  char suffix[65]{};
   i64toa(number, suffix, 10);
   std::filesystem::path path(dirname);
   path.append("output_");

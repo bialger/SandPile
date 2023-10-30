@@ -11,7 +11,8 @@ int main(int32_t argc, char** argv) {
     sand_pile.BeginCollapsing(arguments_parser.GetInputFile(),
                               arguments_parser.GetOutputDirectory(),
                               arguments_parser.GetMaxIterations(),
-                              arguments_parser.GetFrequency());
+                              arguments_parser.GetFrequency(),
+                              arguments_parser.GetWriteTsv());
   } else {
     PrintHelp();
   }

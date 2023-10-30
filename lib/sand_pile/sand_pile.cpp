@@ -3,6 +3,7 @@
 #include "lib/bmp_writer/bmp_writer.hpp"
 #include "lib/field/coordinates_field.hpp"
 #include "lib/field/queue.hpp"
+#include "lib/field/tsv_handler.hpp"
 
 #include <charconv>
 #include <cstring>
@@ -15,41 +16,15 @@ SandPile::SandPile() {
 }
 
 void SandPile::BeginCollapsing(char* filename, char* dirname,
-                               uint64_t max_iterations, uint64_t frequency) {
-  std::ifstream file(filename);
-
-  if (!file.is_open()) {
-    std::cout << "Can't open file: " << filename << std::endl;
-    return;
-  }
-
-  char buffer[64];
-  char temp[64];
-  memset(buffer, 0, 64);
-  memset(temp, 0, 64);
-
-  while (file.getline(buffer, 64)) {
-    char* buffer_ptr = buffer;
-    Point current_point = {0, 0};
-    uint64_t current_element = 0;
-
-    std::from_chars(buffer_ptr, buffer_ptr + strlen(buffer_ptr),
-                    current_point.x);
-    buffer_ptr += strlen(i64toa(static_cast<int64_t>(current_point.x),
-                                buffer, 10)) + 1;
-    std::from_chars(buffer_ptr, buffer_ptr + strlen(buffer_ptr),
-                    current_point.y);
-    buffer_ptr += strlen(i64toa(static_cast<int64_t>(current_point.y),
-                                buffer, 10)) + 1;
-    std::from_chars(buffer_ptr, buffer_ptr + strlen(buffer_ptr),
-                    current_element);
-    pile_.SetElementByCoordinates(current_point, current_element);
-    memset(buffer, 0, 64);
-    memset(temp, 0, 64);
-  }
+                               uint64_t max_iterations, uint64_t frequency, bool write_tsv) {
+  TsvHandler::ImportTSV(filename, pile_);
 
   BmpWriter bmp_writer = BmpWriter();
   bmp_writer.ExportField(dirname, pile_, 0);
+
+  if (write_tsv) {
+    TsvHandler::ExportTSV(dirname, pile_, 0);
+  }
 
   while (current_iter_ < max_iterations && Collapse()) {
     ++current_iter_;
@@ -57,11 +32,21 @@ void SandPile::BeginCollapsing(char* filename, char* dirname,
     if (current_iter_ % frequency == 0) {
       bmp_writer.ExportField(dirname, pile_,
                              static_cast<int64_t>(current_iter_));
+
+      if (write_tsv) {
+        TsvHandler::ExportTSV(dirname, pile_,
+                              static_cast<int64_t>(current_iter_));
+      }
     }
   }
 
   bmp_writer.ExportField(dirname, pile_,
                          static_cast<int64_t>(current_iter_));
+
+  if (write_tsv) {
+    TsvHandler::ExportTSV(dirname, pile_,
+                          static_cast<int64_t>(current_iter_));
+  }
 }
 
 bool SandPile::Collapse() {
