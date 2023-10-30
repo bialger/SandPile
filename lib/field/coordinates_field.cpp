@@ -135,17 +135,10 @@ void CoordinatesField::ActualizeData(const Point& old_positive_capacity,
 void CoordinatesField::SetElementByCoordinates(const Point& point, uint64_t element) {
   Resize(point);
 
-  if (point.x > max_point_.x) {
-    max_point_.x = point.x;
-  } else if (point.x < min_point_.x) {
-    min_point_.x = point.x;
-  }
-
-  if (point.y > max_point_.y) {
-    max_point_.y = point.y;
-  } else if (point.y < min_point_.y) {
-    min_point_.y = point.y;
-  }
+  max_point_.x = std::max(max_point_.x, point.x);
+  max_point_.y = std::max(max_point_.y, point.y);
+  min_point_.x = std::min(min_point_.x, point.x);
+  min_point_.y = std::min(min_point_.y, point.y);
 
   data_[GetIndexByCoordinates(point)] = element;
 }
