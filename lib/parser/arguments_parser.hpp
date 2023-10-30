@@ -12,6 +12,7 @@ enum class ArgumentParsingStatus {
 class ArgumentsParser {
  public:
   ArgumentsParser();
+  ~ArgumentsParser();
   int8_t ParseArguments(char** argv, int32_t argc);
   char* GetInputFile();
   char* GetOutputDirectory();
@@ -19,7 +20,6 @@ class ArgumentsParser {
   uint64_t GetFrequency() const;
   bool GetWriteTsv() const;
   bool GetProvideHelp() const;
-  ~ArgumentsParser();
 
  private:
   constexpr static char* const kError = nullptr;

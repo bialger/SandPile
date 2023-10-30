@@ -19,6 +19,11 @@ ArgumentsParser::ArgumentsParser() {
   provide_help_status_ = ArgumentParsingStatus::kNoArgument;
 }
 
+ArgumentsParser::~ArgumentsParser() {
+  delete[] input_file_;
+  delete[] output_directory_;
+}
+
 int8_t ArgumentsParser::ParseArguments(char** argv, int32_t argc) {
   for (int32_t i = 1; i < argc; ++i) {
     char* candidate = argv[i];
@@ -352,9 +357,4 @@ bool ArgumentsParser::GetWriteTsv() const {
 
 bool ArgumentsParser::GetProvideHelp() const {
   return provide_help_;
-}
-
-ArgumentsParser::~ArgumentsParser() {
-  delete[] input_file_;
-  delete[] output_directory_;
 }
