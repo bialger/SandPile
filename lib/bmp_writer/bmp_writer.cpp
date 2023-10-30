@@ -152,13 +152,12 @@ void BmpWriter::WritePixels(CoordinatesField& field) {
       padding_amount_);
   uint8_t* byte_string = new uint8_t[byte_string_size];
   memset(byte_string, 0, byte_string_size);
-  uint8_t shift;
 
   for (int16_t y = field.GetMinPoint().y; y <= field.GetMaxPoint().y; ++y) {
     for (int16_t x = field.GetMinPoint().x; x <= field.GetMaxPoint().x; ++x) {
       Point current_point = {x, y};
       uint64_t current_element = field.GetElementByCoordinates(current_point);
-      shift = (counter % 2 == 0) ? 4 : 0;
+      uint8_t shift = (counter % 2 == 0) ? 4 : 0;
       if (current_element < 4) {
         byte_string[counter / 2] |= static_cast<uint8_t>(current_element << shift);
       } else {
