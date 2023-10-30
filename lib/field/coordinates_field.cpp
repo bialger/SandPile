@@ -98,24 +98,7 @@ void CoordinatesField::Resize(const Point& size) {
     return;
   }
 
-  size_t new_size = static_cast<size_t>(positive_capacity_.x - negative_capacity_.x + 1) *
-      static_cast<size_t>(positive_capacity_.y - negative_capacity_.y + 1);
-
-  uint64_t* new_data = new uint64_t[new_size];
-
-  std::memset(new_data, 0, sizeof(uint64_t) * new_size);
-
-  for (int16_t y = max_point_.y; y >= min_point_.y; --y) {
-    for (int16_t x = min_point_.x; x <= max_point_.x; ++x) {
-      size_t old_index = static_cast<size_t>(x - old_negative_capacity.x) *
-          static_cast<size_t>(old_positive_capacity.y - old_negative_capacity.y + 1) +
-          static_cast<size_t>(y - old_negative_capacity.y);
-      new_data[GetIndexByCoordinates({x, y})] = data_[old_index];
-    }
-  }
-
-  delete[] data_;
-  data_ = new_data;
+  ActualizeData(old_positive_capacity, old_negative_capacity);
 }
 
 void CoordinatesField::Trim() {
@@ -124,6 +107,11 @@ void CoordinatesField::Trim() {
   positive_capacity_ = max_point_;
   negative_capacity_ = min_point_;
 
+  ActualizeData(old_positive_capacity, old_negative_capacity);
+}
+
+void CoordinatesField::ActualizeData(const Point& old_positive_capacity,
+                                     const Point& old_negative_capacity) {
   size_t new_size = static_cast<size_t>(positive_capacity_.x - negative_capacity_.x + 1) *
       static_cast<size_t>(positive_capacity_.y - negative_capacity_.y + 1);
 

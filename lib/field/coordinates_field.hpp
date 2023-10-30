@@ -36,6 +36,7 @@ class CoordinatesField {
 
   size_t GetIndexByCoordinates(const Point& point) const;
   bool FitPoint(const Point& size);
+  void ActualizeData(const Point& old_positive_capacity, const Point& old_negative_capacity);
 };
 
 #endif // COORDINATES_VECTOR_HPP
