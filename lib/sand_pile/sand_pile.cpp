@@ -1,14 +1,8 @@
 #include "sand_pile.hpp"
-#include "lib/basic/basic_functions.hpp"
 #include "lib/bmp_writer/bmp_writer.hpp"
 #include "lib/field/coordinates_field.hpp"
 #include "lib/field/queue.hpp"
 #include "lib/field/tsv_handler.hpp"
-
-#include <charconv>
-#include <cstring>
-#include <fstream>
-#include <iostream>
 
 SandPile::SandPile() {
   pile_ = CoordinatesField();
@@ -55,7 +49,7 @@ bool SandPile::Collapse() {
 
   for (int16_t y = pile_.GetMaxPoint().y; y >= pile_.GetMinPoint().y; --y) {
     for (int16_t x = pile_.GetMinPoint().x; x <= pile_.GetMaxPoint().x; ++x) {
-      if (pile_[{x, y}] >= 4) {
+      if (pile_[{x, y}] >= kMaxGrainsInCell) {
         unstable.Push({x, y});
         has_unstable = true;
       }
@@ -66,7 +60,7 @@ bool SandPile::Collapse() {
     const Point unstable_point = unstable.Pop();
     int16_t x = unstable_point.x;
     int16_t y = unstable_point.y;
-    pile_[unstable_point] = pile_[unstable_point] - 4;
+    pile_[unstable_point] = pile_[unstable_point] - kMaxGrainsInCell;
     ++x;
 
     if (pile_.GetMaxPoint().x == unstable_point.x) {

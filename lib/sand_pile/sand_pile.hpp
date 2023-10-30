@@ -9,6 +9,7 @@ class SandPile {
   void BeginCollapsing(char* filename, char* dirname, uint64_t max_iterations, uint64_t frequency, bool write_tsv);
 
  private:
+  static constexpr uint64_t kMaxGrainsInCell = 4;
   CoordinatesField pile_;
   uint64_t current_iter_;
 
