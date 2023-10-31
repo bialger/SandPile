@@ -4,12 +4,18 @@
 #include <iostream>
 
 ArgumentsParser::ArgumentsParser() {
-  input_file_ = CompositeArgument("-i", "--input=", "Path to input file");
-  output_directory_ = CompositeArgument("-o", "--output=", "Path to output directory");
-  max_iterations_ = LongArgument("-m", "--max-iter=", "Maximum number of iterations");
-  frequency_ = LongArgument("-f", "--freq=", "Frequency of output");
-  write_tsv_ = BoolArgument("-w", "--write-tsv", "Write output in TSV format");
-  provide_help_ = BoolArgument("-h", "--help", "Provide help");
+  input_file_ = CompositeArgument({"-i", "--input=", "Path to input file",
+                                   ArgumentType::kCompositeArgument, true});
+  output_directory_ = CompositeArgument({"-o", "--output=", "Path to output directory",
+                                         ArgumentType::kCompositeArgument, true});
+  max_iterations_ = LongArgument({"-m", "--max-iter=", "Maximum number of iterations",
+                                  ArgumentType::kLongArgument, false});
+  frequency_ = LongArgument({"-f", "--freq=", "Frequency of output",
+                             ArgumentType::kLongArgument, false});
+  write_tsv_ = BoolArgument({"-w", "--write-tsv", "Write output in TSV format",
+                             ArgumentType::kBoolArgument, false});
+  provide_help_ = BoolArgument({"-h", "--help", "Provide help",
+                                ArgumentType::kBoolArgument, false});
 }
 
 int8_t ArgumentsParser::ParseArguments(char** argv, int32_t argc) {

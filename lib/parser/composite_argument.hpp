@@ -8,7 +8,7 @@
 class CompositeArgument : Argument {
  public:
   CompositeArgument();
-  CompositeArgument(const char* short_key, const char* long_key, const char* name);
+  CompositeArgument(ArgumentInformation info);
   CompositeArgument(const CompositeArgument& other);
   CompositeArgument& operator=(const CompositeArgument& other);
   ~CompositeArgument() override;
@@ -18,6 +18,7 @@ class CompositeArgument : Argument {
   ArgumentParsingStatus GetValueStatus() const override;
   ArgumentType GetType() const override;
   const char* GetName() const override;
+  bool GetIsRequired() const override;
 
  private:
   constexpr static char* const kError = nullptr;
@@ -27,6 +28,7 @@ class CompositeArgument : Argument {
   char* value_;
   ArgumentParsingStatus value_status_;
   ArgumentType type_;
+  bool is_required_;
 };
 
 #endif //COMPOSITE_ARGUMENT_HPP_

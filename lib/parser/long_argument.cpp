@@ -11,15 +11,17 @@ LongArgument::LongArgument() {
   value_ = 0;
   value_status_ = ArgumentParsingStatus::kNoArgument;
   type_ = ArgumentType::kLongArgument;
+  is_required_ = false;
 }
 
-LongArgument::LongArgument(const char* short_key, const char* long_key, const char* name) {
-  short_key_ = short_key;
-  long_key_ = long_key;
-  name_ = name;
+LongArgument::LongArgument(ArgumentInformation info) {
+  short_key_ = info.short_key;
+  long_key_ = info.long_key;
+  name_ = info.name;
   value_ = std::numeric_limits<uint64_t>::max();
   value_status_ = ArgumentParsingStatus::kNoArgument;
   type_ = ArgumentType::kLongArgument;
+  is_required_ = info.is_required;
 }
 
 void LongArgument::ValidateArgument(char* candidate, char* value, bool is_last) {
@@ -59,4 +61,8 @@ ArgumentType LongArgument::GetType() const {
 
 const char* LongArgument::GetName() const {
   return name_;
+}
+
+bool LongArgument::GetIsRequired() const {
+  return is_required_;
 }

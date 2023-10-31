@@ -9,15 +9,17 @@ StringArgument::StringArgument() {
   value_ = kError;
   value_status_ = ArgumentParsingStatus::kNoArgument;
   type_ = ArgumentType::kStringArgument;
+  is_required_ = false;
 }
 
-StringArgument::StringArgument(const char* short_key, const char* long_key, const char* name) {
+StringArgument::StringArgument(ArgumentInformation info) {
   value_ = kError;
-  short_key_ = short_key;
-  long_key_ = long_key;
-  name_ = name;
+  short_key_ = info.short_key;
+  long_key_ = info.long_key;
+  name_ = info.name;
   value_status_ = ArgumentParsingStatus::kNoArgument;
   type_ = ArgumentType::kStringArgument;
+  is_required_ = info.is_required;
 }
 
 StringArgument::StringArgument(const StringArgument& other) {
@@ -27,6 +29,7 @@ StringArgument::StringArgument(const StringArgument& other) {
   value_ = other.value_;
   value_status_ = other.value_status_;
   type_ = ArgumentType::kStringArgument;
+  is_required_ = other.is_required_;
 }
 
 StringArgument& StringArgument::operator=(const StringArgument& other) {
@@ -40,6 +43,7 @@ StringArgument& StringArgument::operator=(const StringArgument& other) {
   value_ = other.value_;
   value_status_ = other.value_status_;
   type_ = ArgumentType::kStringArgument;
+  is_required_ = other.is_required_;
 
   return *this;
 }
@@ -83,4 +87,8 @@ ArgumentType StringArgument::GetType() const {
 
 const char* StringArgument::GetName() const {
   return name_;
+}
+
+bool StringArgument::GetIsRequired() const {
+  return is_required_;
 }

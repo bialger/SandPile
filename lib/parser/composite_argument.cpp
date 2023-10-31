@@ -9,15 +9,17 @@ CompositeArgument::CompositeArgument() {
   value_ = kError;
   value_status_ = ArgumentParsingStatus::kNoArgument;
   type_ = ArgumentType::kCompositeArgument;
+  is_required_ = false;
 }
 
-CompositeArgument::CompositeArgument(const char* short_key, const char* long_key, const char* name) {
+CompositeArgument::CompositeArgument(ArgumentInformation info) {
   value_ = kError;
-  short_key_ = short_key;
-  long_key_ = long_key;
-  name_ = name;
+  short_key_ = info.short_key;
+  long_key_ = info.long_key;
+  name_ = info.name;
   value_status_ = ArgumentParsingStatus::kNoArgument;
   type_ = ArgumentType::kCompositeArgument;
+  is_required_ = info.is_required;
 }
 
 CompositeArgument::CompositeArgument(const CompositeArgument& other) {
@@ -27,6 +29,7 @@ CompositeArgument::CompositeArgument(const CompositeArgument& other) {
   value_ = other.value_;
   value_status_ = other.value_status_;
   type_ = ArgumentType::kCompositeArgument;
+  is_required_ = other.is_required_;
 }
 
 CompositeArgument& CompositeArgument::operator=(const CompositeArgument& other) {
@@ -40,6 +43,7 @@ CompositeArgument& CompositeArgument::operator=(const CompositeArgument& other) 
   value_ = other.value_;
   value_status_ = other.value_status_;
   type_ = ArgumentType::kCompositeArgument;
+  is_required_ = other.is_required_;
 
   return *this;
 }
@@ -145,4 +149,8 @@ ArgumentType CompositeArgument::GetType() const {
 
 const char* CompositeArgument::GetName() const {
   return name_;
+}
+
+bool CompositeArgument::GetIsRequired() const {
+  return is_required_;
 }

@@ -8,7 +8,7 @@
 class StringArgument : Argument {
  public:
   StringArgument();
-  StringArgument(const char* short_key, const char* long_key, const char* name);
+  StringArgument(ArgumentInformation info);
   StringArgument(const StringArgument& other);
   StringArgument& operator=(const StringArgument& other);
   ~StringArgument() override;
@@ -17,6 +17,7 @@ class StringArgument : Argument {
   ArgumentParsingStatus GetValueStatus() const override;
   ArgumentType GetType() const override;
   const char* GetName() const override;
+  bool GetIsRequired() const override;
 
  private:
   constexpr static char* const kError = nullptr;
@@ -26,6 +27,7 @@ class StringArgument : Argument {
   char* value_;
   ArgumentParsingStatus value_status_;
   ArgumentType type_;
+  bool is_required_;
 };
 
 #endif //STRING_ARGUMENT_HPP_

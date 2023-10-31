@@ -8,12 +8,13 @@
 class BoolArgument : Argument {
  public:
   BoolArgument();
-  BoolArgument(const char* short_key, const char* long_key, const char* name);
+  BoolArgument(ArgumentInformation info);
   void ValidateArgument(char* candidate);
   bool GetValue() const;
   ArgumentParsingStatus GetValueStatus() const override;
   ArgumentType GetType() const override;
   const char* GetName() const override;
+  bool GetIsRequired() const override;
 
  private:
   const char* short_key_;
@@ -22,6 +23,7 @@ class BoolArgument : Argument {
   bool value_;
   ArgumentParsingStatus value_status_;
   ArgumentType type_;
+  bool is_required_;
 };
 
 #endif //BOOL_ARGUMENT_HPP_

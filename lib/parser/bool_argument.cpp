@@ -9,15 +9,17 @@ BoolArgument::BoolArgument() {
   value_ = false;
   value_status_ = ArgumentParsingStatus::kNoArgument;
   type_ = ArgumentType::kBoolArgument;
+  is_required_ = false;
 }
 
-BoolArgument::BoolArgument(const char* short_key, const char* long_key, const char* name) {
-  short_key_ = short_key;
-  long_key_ = long_key;
-  name_ = name;
+BoolArgument::BoolArgument(ArgumentInformation info) {
+  short_key_ = info.short_key;
+  long_key_ = info.long_key;
+  name_ = info.name;
   value_ = false;
   value_status_ = ArgumentParsingStatus::kNoArgument;
   type_ = ArgumentType::kBoolArgument;
+  is_required_ = info.is_required;
 }
 
 void BoolArgument::ValidateArgument(char* candidate) {
@@ -42,4 +44,8 @@ ArgumentType BoolArgument::GetType() const {
 
 const char* BoolArgument::GetName() const {
   return name_;
+}
+
+bool BoolArgument::GetIsRequired() const {
+  return is_required_;
 }

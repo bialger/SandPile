@@ -8,12 +8,13 @@
 class LongArgument : Argument {
  public:
   LongArgument();
-  LongArgument(const char* short_key, const char* long_key, const char* name);
+  LongArgument(ArgumentInformation info);
   void ValidateArgument(char* candidate, char* value, bool is_last);
   uint64_t GetValue() const;
   ArgumentParsingStatus GetValueStatus() const override;
   ArgumentType GetType() const override;
   const char* GetName() const override;
+  bool GetIsRequired() const override;
 
  private:
   const char* short_key_;
@@ -22,6 +23,7 @@ class LongArgument : Argument {
   uint64_t value_;
   ArgumentParsingStatus value_status_;
   ArgumentType type_;
+  bool is_required_;
 };
 
 #endif //LONG_ARGUMENT_HPP_
