@@ -7,8 +7,8 @@ int main(int32_t argc, char** argv) {
   bool (* is_regular_file_pointer)(char*) = &IsRegularFile;
   bool (* is_directory_pointer)(char*) = &IsDirectory;
 
-  constexpr size_t argument_count = 6;
-  ArgumentInformation* arguments = new ArgumentInformation[argument_count];
+  constexpr size_t kArgumentCount = 6;
+  ArgumentInformation* arguments = new ArgumentInformation[kArgumentCount];
   arguments[0] = {"-i", "--input=", "Path to input file",
                   ArgumentType::kCompositeArgument, true,
                   is_valid_filename_pointer, is_regular_file_pointer};
@@ -28,7 +28,7 @@ int main(int32_t argc, char** argv) {
                   ArgumentType::kBoolArgument, false,
                   is_valid_filename_pointer, is_regular_file_pointer};
 
-  ArgumentsParser arguments_parser = ArgumentsParser(arguments, argument_count);
+  ArgumentsParser arguments_parser = ArgumentsParser(arguments, kArgumentCount);
   int8_t exit_code = arguments_parser.ParseArguments(argv, argc);
 
   if (exit_code == 0 && !arguments_parser.GetBoolValue(5)) {
