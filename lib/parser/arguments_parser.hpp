@@ -9,6 +9,13 @@
 #include "long_argument.hpp"
 #include "string_argument.hpp"
 
+struct Arguments {
+  BoolArgument bool_argument_ = BoolArgument();
+  CompositeArgument composite_argument_ = CompositeArgument();
+  LongArgument long_argument_ = LongArgument();
+  StringArgument string_argument_ = StringArgument();
+};
+
 class ArgumentsParser {
  public:
   ArgumentsParser();

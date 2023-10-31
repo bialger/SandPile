@@ -5,14 +5,16 @@
 BoolArgument::BoolArgument() {
   short_key_ = nullptr;
   long_key_ = nullptr;
+  name_ = nullptr;
   value_ = false;
   value_status_ = ArgumentParsingStatus::kNoArgument;
   type_ = ArgumentType::kBoolArgument;
 }
 
-BoolArgument::BoolArgument(const char* short_key, const char* long_key) {
+BoolArgument::BoolArgument(const char* short_key, const char* long_key, const char* name) {
   short_key_ = short_key;
   long_key_ = long_key;
+  name_ = name;
   value_ = false;
   value_status_ = ArgumentParsingStatus::kNoArgument;
   type_ = ArgumentType::kBoolArgument;
@@ -36,4 +38,8 @@ ArgumentParsingStatus BoolArgument::GetValueStatus() const {
 
 ArgumentType BoolArgument::GetType() const {
   return type_;
+}
+
+const char* BoolArgument::GetName() const {
+  return name_;
 }

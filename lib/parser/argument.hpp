@@ -19,6 +19,7 @@ class Argument {
   virtual ~Argument() = default;
   virtual ArgumentParsingStatus GetValueStatus() const = 0;
   virtual ArgumentType GetType() const = 0;
+  virtual const char* GetName() const = 0;
 };
 
 #endif //ARGUMENT_HPP_

@@ -8,7 +8,7 @@
 class StringArgument : Argument {
  public:
   StringArgument();
-  StringArgument(const char* short_key, const char* long_key);
+  StringArgument(const char* short_key, const char* long_key, const char* name);
   StringArgument(const StringArgument& other);
   StringArgument& operator=(const StringArgument& other);
   ~StringArgument() override;
@@ -16,11 +16,13 @@ class StringArgument : Argument {
   char* GetValue() const;
   ArgumentParsingStatus GetValueStatus() const override;
   ArgumentType GetType() const override;
+  const char* GetName() const override;
 
  private:
   constexpr static char* const kError = nullptr;
   const char* short_key_;
   const char* long_key_;
+  const char* name_;
   char* value_;
   ArgumentParsingStatus value_status_;
   ArgumentType type_;

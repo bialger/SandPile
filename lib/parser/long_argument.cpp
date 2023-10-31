@@ -7,14 +7,16 @@
 LongArgument::LongArgument() {
   short_key_ = nullptr;
   long_key_ = nullptr;
+  name_ = nullptr;
   value_ = 0;
   value_status_ = ArgumentParsingStatus::kNoArgument;
   type_ = ArgumentType::kLongArgument;
 }
 
-LongArgument::LongArgument(const char* short_key, const char* long_key) {
+LongArgument::LongArgument(const char* short_key, const char* long_key, const char* name) {
   short_key_ = short_key;
   long_key_ = long_key;
+  name_ = name;
   value_ = std::numeric_limits<uint64_t>::max();
   value_status_ = ArgumentParsingStatus::kNoArgument;
   type_ = ArgumentType::kLongArgument;
@@ -53,4 +55,8 @@ ArgumentParsingStatus LongArgument::GetValueStatus() const {
 
 ArgumentType LongArgument::GetType() const {
   return type_;
+}
+
+const char* LongArgument::GetName() const {
+  return name_;
 }
