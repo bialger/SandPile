@@ -140,6 +140,10 @@ void CompositeArgument::ValidateArgument(char** argv,
       }
     }
   }
+
+  if (value_status_ == ArgumentParsingStatus::kNoArgument) {
+    value_status_ = ArgumentParsingStatus::kBrokenArgument;
+  }
 }
 
 char* CompositeArgument::GetValue() const {
