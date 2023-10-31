@@ -3,27 +3,19 @@
 #include <cstring>
 
 BoolArgument::BoolArgument() {
-  short_key_ = nullptr;
-  long_key_ = nullptr;
-  name_ = nullptr;
   value_ = false;
   value_status_ = ArgumentParsingStatus::kNoArgument;
-  type_ = ArgumentType::kBoolArgument;
-  is_required_ = false;
+  info_ = ArgumentInformation{};
 }
 
 BoolArgument::BoolArgument(ArgumentInformation info) {
-  short_key_ = info.short_key;
-  long_key_ = info.long_key;
-  name_ = info.name;
   value_ = false;
   value_status_ = ArgumentParsingStatus::kNoArgument;
-  type_ = ArgumentType::kBoolArgument;
-  is_required_ = info.is_required;
+  info_ = info;
 }
 
 void BoolArgument::ValidateArgument(char* candidate) {
-  if (strcmp(candidate, short_key_) == 0 || strcmp(candidate, long_key_) == 0) {
+  if (strcmp(candidate, info_.short_key) == 0 || strcmp(candidate, info_.long_key) == 0) {
     value_ = true;
     value_status_ = ArgumentParsingStatus::kSuccess;
   }
@@ -39,13 +31,13 @@ ArgumentParsingStatus BoolArgument::GetValueStatus() const {
 
 
 ArgumentType BoolArgument::GetType() const {
-  return type_;
+  return info_.type;
 }
 
 const char* BoolArgument::GetName() const {
-  return name_;
+  return info_.name;
 }
 
 bool BoolArgument::GetIsRequired() const {
-  return is_required_;
+  return info_.is_required;
 }

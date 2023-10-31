@@ -3,9 +3,16 @@
 
 #include "lib/field/coordinates_field.hpp"
 
+/** \n This class represents the Abelian sandpile model. It
+ * contains methods for collapsing the given sandpile. */
+
 class SandPile {
  public:
   SandPile();
+
+  /** \n This function takes Abelian sandpile parameters and
+   * iteration restrictions and begins the process of collapsing. */
+
   void BeginCollapsing(char* filename, char* dirname, uint64_t max_iterations, uint64_t frequency, bool write_tsv);
 
  private:

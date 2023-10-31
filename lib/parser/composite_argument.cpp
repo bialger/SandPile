@@ -3,39 +3,21 @@
 #include "lib/basic/basic_functions.hpp"
 
 CompositeArgument::CompositeArgument() {
-  short_key_ = nullptr;
-  long_key_ = nullptr;
-  name_ = nullptr;
   value_ = kError;
   value_status_ = ArgumentParsingStatus::kNoArgument;
-  type_ = ArgumentType::kCompositeArgument;
-  is_required_ = false;
-  Validate_ = nullptr;
-  IsGood_ = nullptr;
+  info_ = ArgumentInformation{};
 }
 
 CompositeArgument::CompositeArgument(ArgumentInformation info) {
   value_ = kError;
-  short_key_ = info.short_key;
-  long_key_ = info.long_key;
-  name_ = info.name;
   value_status_ = ArgumentParsingStatus::kNoArgument;
-  type_ = ArgumentType::kCompositeArgument;
-  is_required_ = info.is_required;
-  Validate_ = info.Validate;
-  IsGood_ = info.IsGood;
+  info_ = info;
 }
 
 CompositeArgument::CompositeArgument(const CompositeArgument& other) {
-  short_key_ = other.short_key_;
-  long_key_ = other.long_key_;
-  name_ = other.name_;
   value_ = other.value_;
   value_status_ = other.value_status_;
-  type_ = ArgumentType::kCompositeArgument;
-  is_required_ = other.is_required_;
-  Validate_ = other.Validate_;
-  IsGood_ = other.IsGood_;
+  info_ = other.info_;
 }
 
 CompositeArgument& CompositeArgument::operator=(const CompositeArgument& other) {
@@ -43,15 +25,9 @@ CompositeArgument& CompositeArgument::operator=(const CompositeArgument& other) 
     return *this;
   }
 
-  short_key_ = other.short_key_;
-  long_key_ = other.long_key_;
-  name_ = other.name_;
   value_ = other.value_;
   value_status_ = other.value_status_;
-  type_ = ArgumentType::kCompositeArgument;
-  is_required_ = other.is_required_;
-  Validate_ = other.Validate_;
-  IsGood_ = other.IsGood_;
+  info_ = other.info_;
 
   return *this;
 }
@@ -65,15 +41,15 @@ void CompositeArgument::ValidateArgument(char** argv,
                                          char* candidate,
                                          char* value,
                                          int32_t position) {
-  bool is_short = strcmp(candidate, short_key_) == 0 && position != argc - 1;
-  bool is_long = strncmp(candidate, long_key_, strlen(long_key_)) == 0;
+  bool is_short = strcmp(candidate, info_.short_key) == 0 && position != argc - 1;
+  bool is_long = strncmp(candidate, info_.long_key, strlen(info_.long_key)) == 0;
 
   if (!(is_short || is_long) ||
       value_status_ == ArgumentParsingStatus::kSuccess) {
     return;
   }
 
-  char* pre_value = is_short ? value : candidate + strlen(long_key_);
+  char* pre_value = is_short ? value : candidate + strlen(info_.long_key);
 
   if (strlen(pre_value) > 1) {
     if (strncmp(pre_value, "./", 2) == 0 || strncmp(pre_value, "C:", 2) == 0 ||
@@ -90,8 +66,8 @@ void CompositeArgument::ValidateArgument(char** argv,
       bool is_real_file = false;
       int32_t current = position;
 
-      if (Validate_(value_)) {
-        is_real_file = IsGood_(value_);
+      if (info_.Validate(value_)) {
+        is_real_file = info_.IsGood(value_);
       } else {
         value_status_ = ArgumentParsingStatus::kBrokenArgument;
       }
@@ -108,8 +84,8 @@ void CompositeArgument::ValidateArgument(char** argv,
         delete[] value_;
         value_ = new_candidate;
 
-        if (Validate_(value_)) {
-          is_real_file = IsGood_(value_);
+        if (info_.Validate(value_)) {
+          is_real_file = info_.IsGood(value_);
         } else {
           value_status_ = ArgumentParsingStatus::kBrokenArgument;
         }
@@ -133,8 +109,8 @@ void CompositeArgument::ValidateArgument(char** argv,
     strcat(simple_value, IsWindows() ? "" : "./");
     strcat(simple_value, pre_value);
 
-    if (Validate_(simple_value)) {
-      if (IsGood_(simple_value)) {
+    if (info_.Validate(simple_value)) {
+      if (info_.IsGood(simple_value)) {
         value_ = simple_value;
         value_status_ = ArgumentParsingStatus::kSuccess;
       }
@@ -155,13 +131,13 @@ ArgumentParsingStatus CompositeArgument::GetValueStatus() const {
 }
 
 ArgumentType CompositeArgument::GetType() const {
-  return type_;
+  return info_.type;
 }
 
 const char* CompositeArgument::GetName() const {
-  return name_;
+  return info_.name;
 }
 
 bool CompositeArgument::GetIsRequired() const {
-  return is_required_;
+  return info_.is_required;
 }

@@ -21,15 +21,9 @@ class CompositeArgument : Argument {
 
  private:
   constexpr static char* const kError = nullptr;
-  const char* short_key_;
-  const char* long_key_;
-  const char* name_;
   char* value_;
   ArgumentParsingStatus value_status_;
-  ArgumentType type_;
-  bool is_required_;
-  bool (* Validate_)(char*);
-  bool (* IsGood_)(char*);
+  ArgumentInformation info_;
 };
 
 #endif //COMPOSITE_ARGUMENT_HPP_

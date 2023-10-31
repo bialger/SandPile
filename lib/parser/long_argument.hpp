@@ -17,13 +17,9 @@ class LongArgument : Argument {
   bool GetIsRequired() const override;
 
  private:
-  const char* short_key_;
-  const char* long_key_;
-  const char* name_;
   uint64_t value_;
   ArgumentParsingStatus value_status_;
-  ArgumentType type_;
-  bool is_required_;
+  ArgumentInformation info_;
 };
 
 #endif //LONG_ARGUMENT_HPP_

@@ -18,11 +18,23 @@ struct Arguments {
   ArgumentInformation info{};
 };
 
+/** \n This class represents the command-line argument parser.
+ * It contains parsing methods that are independent from
+ * the quantity and type of arguments. */
+
 class ArgumentsParser {
  public:
   ArgumentsParser();
   ~ArgumentsParser();
+
+  /** \n Constructor that initializes the ArgumentsParser object, which checks
+   * arguments for being argument_count different values listed in arguments. */
+
   ArgumentsParser(ArgumentInformation* arguments, size_t argument_count);
+
+  /** \n Parses the command-line arguments listed in arguments
+   * array and returns an exit code 0 if success, 1 if failed. */
+
   int8_t ParseArguments(char** argv, int32_t argc);
   bool GetBoolValue(size_t index) const;
   char* GetCompositeValue(size_t index) const;

@@ -3,36 +3,21 @@
 #include <cstring>
 
 StringArgument::StringArgument() {
-  short_key_ = nullptr;
-  long_key_ = nullptr;
-  name_ = nullptr;
   value_ = kError;
   value_status_ = ArgumentParsingStatus::kNoArgument;
-  type_ = ArgumentType::kStringArgument;
-  is_required_ = false;
-  IsGood_ = nullptr;
+  info_ = ArgumentInformation{};
 }
 
 StringArgument::StringArgument(ArgumentInformation info) {
   value_ = kError;
-  short_key_ = info.short_key;
-  long_key_ = info.long_key;
-  name_ = info.name;
   value_status_ = ArgumentParsingStatus::kNoArgument;
-  type_ = ArgumentType::kStringArgument;
-  is_required_ = info.is_required;
-  IsGood_ = info.IsGood;
+  info_ = info;
 }
 
 StringArgument::StringArgument(const StringArgument& other) {
-  short_key_ = other.short_key_;
-  long_key_ = other.long_key_;
-  name_ = other.name_;
   value_ = other.value_;
   value_status_ = other.value_status_;
-  type_ = ArgumentType::kStringArgument;
-  is_required_ = other.is_required_;
-  IsGood_ = other.IsGood_;
+  info_ = other.info_;
 }
 
 StringArgument& StringArgument::operator=(const StringArgument& other) {
@@ -40,14 +25,9 @@ StringArgument& StringArgument::operator=(const StringArgument& other) {
     return *this;
   }
 
-  short_key_ = other.short_key_;
-  long_key_ = other.long_key_;
-  name_ = other.name_;
   value_ = other.value_;
   value_status_ = other.value_status_;
-  type_ = ArgumentType::kStringArgument;
-  is_required_ = other.is_required_;
-  IsGood_ = other.IsGood_;
+  info_ = other.info_;
 
   return *this;
 }
@@ -57,21 +37,26 @@ StringArgument::~StringArgument() {
 }
 
 void StringArgument::ValidateArgument (char* candidate, char* value, bool is_last) {
-  bool is_short = strcmp(candidate, short_key_) == 0 && !is_last;
-  bool is_long = strncmp(candidate, long_key_, strlen(long_key_)) == 0;
+  bool is_short = strcmp(candidate, info_.short_key) == 0 && !is_last;
+  bool is_long = strncmp(candidate, info_.long_key, strlen(info_.long_key)) == 0;
 
   if (!(is_short || is_long) ||
       value_status_ == ArgumentParsingStatus::kSuccess) {
     return;
   }
 
-  char* pre_value = is_short ? value : candidate + strlen(long_key_);
+  char* pre_value = is_short ? value : candidate + strlen(info_.long_key);
+
+  if (pre_value[0] == '\'' || pre_value[0] == '"') {
+    ++pre_value;
+    *(strrchr(pre_value, '\0') - 1) = '\0';
+  }
 
   value_ = new char[strlen(pre_value) + 1];
   strcpy(value_, pre_value);
   value_status_ = ArgumentParsingStatus::kSuccess;
 
-  if (!IsGood_(value)) {
+  if (!info_.IsGood(value)) {
     value_ = kError;
     value_status_ = ArgumentParsingStatus::kBrokenArgument;
   }
@@ -86,13 +71,13 @@ ArgumentParsingStatus StringArgument::GetValueStatus() const {
 }
 
 ArgumentType StringArgument::GetType() const {
-  return type_;
+  return info_.type;
 }
 
 const char* StringArgument::GetName() const {
-  return name_;
+  return info_.name;
 }
 
 bool StringArgument::GetIsRequired() const {
-  return is_required_;
+  return info_.is_required;
 }

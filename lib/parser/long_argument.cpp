@@ -5,31 +5,23 @@
 #include <cstring>
 
 LongArgument::LongArgument() {
-  short_key_ = nullptr;
-  long_key_ = nullptr;
-  name_ = nullptr;
   value_ = 0;
   value_status_ = ArgumentParsingStatus::kNoArgument;
-  type_ = ArgumentType::kLongArgument;
-  is_required_ = false;
+  info_ = ArgumentInformation{};
 }
 
 LongArgument::LongArgument(ArgumentInformation info) {
-  short_key_ = info.short_key;
-  long_key_ = info.long_key;
-  name_ = info.name;
   value_ = std::numeric_limits<uint64_t>::max();
   value_status_ = ArgumentParsingStatus::kNoArgument;
-  type_ = ArgumentType::kLongArgument;
-  is_required_ = info.is_required;
+  info_ = info;
 }
 
 void LongArgument::ValidateArgument(char* candidate, char* value, bool is_last) {
-  bool is_short = strcmp(candidate, short_key_) == 0 && !is_last;
-  bool is_long = strncmp(candidate, long_key_, strlen(long_key_)) == 0;
+  bool is_short = strcmp(candidate, info_.short_key) == 0 && !is_last;
+  bool is_long = strncmp(candidate, info_.long_key, strlen(info_.long_key)) == 0;
 
   if (is_short || is_long) {
-    char* string_value = is_short ? value : candidate + strlen(long_key_);
+    char* string_value = is_short ? value : candidate + strlen(info_.long_key);
 
     if (string_value[0] == '\'' || string_value[0] == '"') {
       ++string_value;
@@ -56,13 +48,13 @@ ArgumentParsingStatus LongArgument::GetValueStatus() const {
 }
 
 ArgumentType LongArgument::GetType() const {
-  return type_;
+  return info_.type;
 }
 
 const char* LongArgument::GetName() const {
-  return name_;
+  return info_.name;
 }
 
 bool LongArgument::GetIsRequired() const {
-  return is_required_;
+  return info_.is_required;
 }

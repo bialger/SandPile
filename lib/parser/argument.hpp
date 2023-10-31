@@ -14,6 +14,9 @@ enum class ArgumentType {
   kStringArgument
 };
 
+/** \n This structure represents a single information.
+ * Contains all required parameters for all argument types. */
+
 struct ArgumentInformation {
   const char* short_key = nullptr;
   const char* long_key = nullptr;
