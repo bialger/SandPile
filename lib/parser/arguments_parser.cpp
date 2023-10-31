@@ -4,25 +4,43 @@
 #include <iostream>
 
 ArgumentsParser::ArgumentsParser() {
-  input_file_ = CompositeArgument({"-i", "--input=", "Path to input file",
-                                   ArgumentType::kCompositeArgument, true});
-  output_directory_ = CompositeArgument({"-o", "--output=", "Path to output directory",
-                                         ArgumentType::kCompositeArgument, true});
-  max_iterations_ = LongArgument({"-m", "--max-iter=", "Maximum number of iterations",
-                                  ArgumentType::kLongArgument, false});
-  frequency_ = LongArgument({"-f", "--freq=", "Frequency of output",
-                             ArgumentType::kLongArgument, false});
-  write_tsv_ = BoolArgument({"-w", "--write-tsv", "Write output in TSV format",
-                             ArgumentType::kBoolArgument, false});
-  provide_help_ = BoolArgument({"-h", "--help", "Provide help",
-                                ArgumentType::kBoolArgument, false});
+  size_ = 1;
+  arguments_ = new Arguments[size_];
+}
+
+
+ArgumentsParser::ArgumentsParser(ArgumentInformation* arguments, size_t argument_count) {
+  size_ = argument_count;
+  arguments_ = new Arguments[size_];
+
+  for (size_t i = 0; i < size_; ++i) {
+    switch (arguments[i].type) {
+      case ArgumentType::kBoolArgument:
+        arguments_[i].bool_argument = BoolArgument(arguments[i]);
+        arguments_[i].info = arguments[i];
+        break;
+      case ArgumentType::kCompositeArgument:
+        arguments_[i].composite_argument = CompositeArgument(arguments[i]);
+        arguments_[i].info = arguments[i];
+        break;
+      case ArgumentType::kLongArgument:
+        arguments_[i].long_argument = LongArgument(arguments[i]);
+        arguments_[i].info = arguments[i];
+        break;
+      case ArgumentType::kStringArgument:
+        arguments_[i].string_argument = StringArgument(arguments[i]);
+        arguments_[i].info = arguments[i];
+        break;
+    }
+  }
+}
+
+
+ArgumentsParser::~ArgumentsParser() {
+  delete[] arguments_;
 }
 
 int8_t ArgumentsParser::ParseArguments(char** argv, int32_t argc) {
-  bool (* is_valid_filename_pointer)(char*) = &IsValidFilename;
-  bool (* is_regular_file_pointer)(char*) = &IsRegularFile;
-  bool (* is_directory_pointer)(char*) = &IsDirectory;
-
   for (int32_t i = 1; i < argc; ++i) {
     char* candidate = argv[i];
     char* value = nullptr;
@@ -32,14 +50,22 @@ int8_t ArgumentsParser::ParseArguments(char** argv, int32_t argc) {
       value = argv[i + 1];
     }
 
-    input_file_.ValidateArgument(argv, argc, candidate, value, i,
-                                 is_valid_filename_pointer, is_regular_file_pointer);
-    output_directory_.ValidateArgument(argv, argc, candidate, value, i,
-                                       is_valid_filename_pointer, is_directory_pointer);
-    max_iterations_.ValidateArgument(candidate, value, is_last);
-    frequency_.ValidateArgument(candidate, value, is_last);
-    write_tsv_.ValidateArgument(candidate);
-    provide_help_.ValidateArgument(candidate);
+    for (size_t j = 0; j < size_; ++j) {
+      switch (arguments_[j].info.type) {
+        case ArgumentType::kBoolArgument:
+          arguments_[j].bool_argument.ValidateArgument(candidate);
+          break;
+        case ArgumentType::kCompositeArgument:
+          arguments_[j].composite_argument.ValidateArgument(argv, argc, candidate, value, i);
+          break;
+        case ArgumentType::kLongArgument:
+          arguments_[j].long_argument.ValidateArgument(candidate, value, is_last);
+          break;
+        case ArgumentType::kStringArgument:
+          arguments_[j].string_argument.ValidateArgument(candidate, value, is_last);
+          break;
+      }
+    }
   }
 
   return HandleErrors();
@@ -60,37 +86,32 @@ int8_t ArgumentsParser::HandleErrors() {
   /* Conditional block to set the console text color to red if the program is
    * running on Windows, using the Windows API functions. */
 
-  if (input_file_.GetValueStatus() != ArgumentParsingStatus::kSuccess &&
-      provide_help_.GetValueStatus() != ArgumentParsingStatus::kSuccess) {
-    if (input_file_.GetValueStatus() == ArgumentParsingStatus::kNoArgument) {
-      std::cout << "Error! Input file name not specified. \n\n";
-    } else if (input_file_.GetValueStatus() == ArgumentParsingStatus::kBrokenArgument) {
-      std::cout << "Error! Input file name is incorrect. "
-                   "Make sure that it is not a directory. \n\n";
+  for (size_t i = 0; i < size_; ++i) {
+    ArgumentInformation current_argument_information = arguments_[i].info;
+    ArgumentParsingStatus current_status = ArgumentParsingStatus::kBrokenArgument;
+
+    switch (arguments_[i].info.type) {
+      case ArgumentType::kBoolArgument:
+        current_status = arguments_[i].bool_argument.GetValueStatus();
+        break;
+      case ArgumentType::kCompositeArgument:
+        current_status = arguments_[i].composite_argument.GetValueStatus();
+        break;
+      case ArgumentType::kLongArgument:
+        current_status = arguments_[i].long_argument.GetValueStatus();
+        break;
+      case ArgumentType::kStringArgument:
+        current_status = arguments_[i].string_argument.GetValueStatus();
+        break;
     }
 
-    exitCode = 1;
-  }
-
-  if (output_directory_.GetValueStatus() != ArgumentParsingStatus::kSuccess &&
-      provide_help_.GetValueStatus() != ArgumentParsingStatus::kSuccess) {
-    if (output_directory_.GetValueStatus() == ArgumentParsingStatus::kNoArgument) {
-      std::cout << "Error! Output directory not specified. \n\n";
-    } else if (output_directory_.GetValueStatus() == ArgumentParsingStatus::kBrokenArgument) {
-      std::cout << "Error! Output directory is incorrect. \n\n";
+    if (current_argument_information.is_required && current_status == ArgumentParsingStatus::kNoArgument) {
+      std::cout << "Error! " << current_argument_information.name << " not specified. \n\n";
+      exitCode = 1;
+    } else if (current_status == ArgumentParsingStatus::kBrokenArgument) {
+      std::cout << "Error! " << current_argument_information.name << " is incorrect. \n\n";
+      exitCode = 1;
     }
-
-    exitCode = 1;
-  }
-
-  if (max_iterations_.GetValueStatus() == ArgumentParsingStatus::kBrokenArgument) {
-    std::cout << "Error! Maximum iterations argument is incorrect. \n\n";
-    exitCode = 1;
-  }
-
-  if (frequency_.GetValueStatus() == ArgumentParsingStatus::kBrokenArgument) {
-    std::cout << "Error! Frequency argument is incorrect. \n\n";
-    exitCode = 1;
   }
 
   if (IsWindows()) {
@@ -102,26 +123,18 @@ int8_t ArgumentsParser::HandleErrors() {
   return exitCode;
 }
 
-char* ArgumentsParser::GetInputFile() {
-  return input_file_.GetValue();
+bool ArgumentsParser::GetBoolValue(size_t index) const {
+  return arguments_[index].bool_argument.GetValue();
 }
 
-char* ArgumentsParser::GetOutputDirectory() {
-  return output_directory_.GetValue();
+char* ArgumentsParser::GetCompositeValue(size_t index) const {
+  return arguments_[index].composite_argument.GetValue();
 }
 
-uint64_t ArgumentsParser::GetMaxIterations() const {
-  return max_iterations_.GetValue();
+uint64_t ArgumentsParser::GetLongValue(size_t index) const {
+  return arguments_[index].long_argument.GetValue();
 }
 
-uint64_t ArgumentsParser::GetFrequency() const {
-  return frequency_.GetValue();
-}
-
-bool ArgumentsParser::GetWriteTsv() const {
-  return write_tsv_.GetValue();
-}
-
-bool ArgumentsParser::GetProvideHelp() const {
-  return provide_help_.GetValue();
+char* ArgumentsParser::GetStringValue(size_t index) const {
+  return arguments_[index].string_argument.GetValue();
 }

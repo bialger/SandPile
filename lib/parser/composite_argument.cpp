@@ -10,6 +10,8 @@ CompositeArgument::CompositeArgument() {
   value_status_ = ArgumentParsingStatus::kNoArgument;
   type_ = ArgumentType::kCompositeArgument;
   is_required_ = false;
+  Validate_ = nullptr;
+  IsGood_ = nullptr;
 }
 
 CompositeArgument::CompositeArgument(ArgumentInformation info) {
@@ -20,6 +22,8 @@ CompositeArgument::CompositeArgument(ArgumentInformation info) {
   value_status_ = ArgumentParsingStatus::kNoArgument;
   type_ = ArgumentType::kCompositeArgument;
   is_required_ = info.is_required;
+  Validate_ = info.Validate;
+  IsGood_ = info.IsGood;
 }
 
 CompositeArgument::CompositeArgument(const CompositeArgument& other) {
@@ -30,6 +34,8 @@ CompositeArgument::CompositeArgument(const CompositeArgument& other) {
   value_status_ = other.value_status_;
   type_ = ArgumentType::kCompositeArgument;
   is_required_ = other.is_required_;
+  Validate_ = other.Validate_;
+  IsGood_ = other.IsGood_;
 }
 
 CompositeArgument& CompositeArgument::operator=(const CompositeArgument& other) {
@@ -44,6 +50,8 @@ CompositeArgument& CompositeArgument::operator=(const CompositeArgument& other) 
   value_status_ = other.value_status_;
   type_ = ArgumentType::kCompositeArgument;
   is_required_ = other.is_required_;
+  Validate_ = other.Validate_;
+  IsGood_ = other.IsGood_;
 
   return *this;
 }
@@ -56,9 +64,7 @@ void CompositeArgument::ValidateArgument(char** argv,
                                          int32_t argc,
                                          char* candidate,
                                          char* value,
-                                         int32_t position,
-                                         bool (* Validate)(char*),
-                                         bool (* IsGood)(char*)) {
+                                         int32_t position) {
   bool is_short = strcmp(candidate, short_key_) == 0 && position != argc - 1;
   bool is_long = strncmp(candidate, long_key_, strlen(long_key_)) == 0;
 
@@ -71,7 +77,8 @@ void CompositeArgument::ValidateArgument(char** argv,
 
   if (strlen(pre_value) > 1) {
     if (strncmp(pre_value, "./", 2) == 0 || strncmp(pre_value, "C:", 2) == 0 ||
-        strncmp(pre_value, ".\\", 2) == 0 || pre_value[0] == '/') {
+        strncmp(pre_value, ".\\", 2) == 0 || (!IsWindows() && strncmp(pre_value, "../", 3) == 0)
+        || pre_value[0] == '/') {
       value_ = new char[strlen(pre_value) + 1];
       strcpy(value_, pre_value);
     } else if (strncmp(pre_value, "file://", 7) == 0) {
@@ -83,8 +90,8 @@ void CompositeArgument::ValidateArgument(char** argv,
       bool is_real_file = false;
       int32_t current = position;
 
-      if (Validate(value_)) {
-        is_real_file = IsGood(value_);
+      if (Validate_(value_)) {
+        is_real_file = IsGood_(value_);
       } else {
         value_status_ = ArgumentParsingStatus::kBrokenArgument;
       }
@@ -101,8 +108,8 @@ void CompositeArgument::ValidateArgument(char** argv,
         delete[] value_;
         value_ = new_candidate;
 
-        if (Validate(value_)) {
-          is_real_file = IsGood(value_);
+        if (Validate_(value_)) {
+          is_real_file = IsGood_(value_);
         } else {
           value_status_ = ArgumentParsingStatus::kBrokenArgument;
         }
@@ -126,8 +133,8 @@ void CompositeArgument::ValidateArgument(char** argv,
     strcat(simple_value, IsWindows() ? "" : "./");
     strcat(simple_value, pre_value);
 
-    if (Validate(simple_value)) {
-      if (IsGood(simple_value)) {
+    if (Validate_(simple_value)) {
+      if (IsGood_(simple_value)) {
         value_ = simple_value;
         value_status_ = ArgumentParsingStatus::kSuccess;
       }

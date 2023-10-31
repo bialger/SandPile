@@ -10,6 +10,7 @@ StringArgument::StringArgument() {
   value_status_ = ArgumentParsingStatus::kNoArgument;
   type_ = ArgumentType::kStringArgument;
   is_required_ = false;
+  IsGood_ = nullptr;
 }
 
 StringArgument::StringArgument(ArgumentInformation info) {
@@ -20,6 +21,7 @@ StringArgument::StringArgument(ArgumentInformation info) {
   value_status_ = ArgumentParsingStatus::kNoArgument;
   type_ = ArgumentType::kStringArgument;
   is_required_ = info.is_required;
+  IsGood_ = info.IsGood;
 }
 
 StringArgument::StringArgument(const StringArgument& other) {
@@ -30,6 +32,7 @@ StringArgument::StringArgument(const StringArgument& other) {
   value_status_ = other.value_status_;
   type_ = ArgumentType::kStringArgument;
   is_required_ = other.is_required_;
+  IsGood_ = other.IsGood_;
 }
 
 StringArgument& StringArgument::operator=(const StringArgument& other) {
@@ -44,6 +47,7 @@ StringArgument& StringArgument::operator=(const StringArgument& other) {
   value_status_ = other.value_status_;
   type_ = ArgumentType::kStringArgument;
   is_required_ = other.is_required_;
+  IsGood_ = other.IsGood_;
 
   return *this;
 }
@@ -52,7 +56,7 @@ StringArgument::~StringArgument() {
   delete[] value_;
 }
 
-void StringArgument::ValidateArgument (char* candidate, char* value, bool is_last, bool (* IsGood)(char*)) {
+void StringArgument::ValidateArgument (char* candidate, char* value, bool is_last) {
   bool is_short = strcmp(candidate, short_key_) == 0 && !is_last;
   bool is_long = strncmp(candidate, long_key_, strlen(long_key_)) == 0;
 
@@ -67,7 +71,7 @@ void StringArgument::ValidateArgument (char* candidate, char* value, bool is_las
   strcpy(value_, pre_value);
   value_status_ = ArgumentParsingStatus::kSuccess;
 
-  if (!IsGood(value)) {
+  if (!IsGood_(value)) {
     value_ = kError;
     value_status_ = ArgumentParsingStatus::kBrokenArgument;
   }

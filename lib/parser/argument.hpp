@@ -20,6 +20,8 @@ struct ArgumentInformation {
   const char* name = nullptr;
   ArgumentType type = ArgumentType::kBoolArgument;
   bool is_required = false;
+  bool (* Validate)(char*) = nullptr;
+  bool (* IsGood)(char*) = nullptr;
 };
 
 class Argument {

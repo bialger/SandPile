@@ -12,8 +12,7 @@ class CompositeArgument : Argument {
   CompositeArgument(const CompositeArgument& other);
   CompositeArgument& operator=(const CompositeArgument& other);
   ~CompositeArgument() override;
-  void ValidateArgument(char** argv, int32_t argc, char* candidate, char* value, int32_t position,
-                        bool (* Validate)(char*), bool (* IsGood)(char*));
+  void ValidateArgument(char** argv, int32_t argc, char* candidate, char* value, int32_t position);
   char* GetValue() const;
   ArgumentParsingStatus GetValueStatus() const override;
   ArgumentType GetType() const override;
@@ -29,6 +28,8 @@ class CompositeArgument : Argument {
   ArgumentParsingStatus value_status_;
   ArgumentType type_;
   bool is_required_;
+  bool (* Validate_)(char*);
+  bool (* IsGood_)(char*);
 };
 
 #endif //COMPOSITE_ARGUMENT_HPP_

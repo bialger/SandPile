@@ -12,7 +12,7 @@ class StringArgument : Argument {
   StringArgument(const StringArgument& other);
   StringArgument& operator=(const StringArgument& other);
   ~StringArgument() override;
-  void ValidateArgument(char* candidate, char* value, bool is_last, bool (* IsGood)(char*));
+  void ValidateArgument(char* candidate, char* value, bool is_last);
   char* GetValue() const;
   ArgumentParsingStatus GetValueStatus() const override;
   ArgumentType GetType() const override;
@@ -28,6 +28,7 @@ class StringArgument : Argument {
   ArgumentParsingStatus value_status_;
   ArgumentType type_;
   bool is_required_;
+  bool (* IsGood_)(char*);
 };
 
 #endif //STRING_ARGUMENT_HPP_

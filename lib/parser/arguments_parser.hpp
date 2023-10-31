@@ -2,6 +2,7 @@
 #define ARGUMENTS_PARSER_HPP
 
 #include <cstdint>
+#include <cstring>
 
 #include "argument.hpp"
 #include "bool_argument.hpp"
@@ -10,30 +11,27 @@
 #include "string_argument.hpp"
 
 struct Arguments {
-  BoolArgument bool_argument_ = BoolArgument();
-  CompositeArgument composite_argument_ = CompositeArgument();
-  LongArgument long_argument_ = LongArgument();
-  StringArgument string_argument_ = StringArgument();
+  BoolArgument bool_argument = BoolArgument();
+  CompositeArgument composite_argument = CompositeArgument();
+  LongArgument long_argument = LongArgument();
+  StringArgument string_argument = StringArgument();
+  ArgumentInformation info{};
 };
 
 class ArgumentsParser {
  public:
   ArgumentsParser();
+  ~ArgumentsParser();
+  ArgumentsParser(ArgumentInformation* arguments, size_t argument_count);
   int8_t ParseArguments(char** argv, int32_t argc);
-  char* GetInputFile();
-  char* GetOutputDirectory();
-  uint64_t GetMaxIterations() const;
-  uint64_t GetFrequency() const;
-  bool GetWriteTsv() const;
-  bool GetProvideHelp() const;
+  bool GetBoolValue(size_t index) const;
+  char* GetCompositeValue(size_t index) const;
+  uint64_t GetLongValue(size_t index) const;
+  char* GetStringValue(size_t index) const;
 
  private:
-  CompositeArgument input_file_;
-  CompositeArgument output_directory_;
-  LongArgument max_iterations_;
-  LongArgument frequency_;
-  BoolArgument write_tsv_;
-  BoolArgument provide_help_;
+  Arguments* arguments_;
+  size_t size_;
 
   /** \n The HandleErrors function identifies and handles errors in the
    * ParsingResult by outputting error messages and setting an exit code. It
