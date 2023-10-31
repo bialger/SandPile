@@ -6,22 +6,26 @@
 #include <cstddef>
 #include <cstdint>
 
+struct Node {
+  Point data;
+  Node* next;
+};
+
 class Queue {
  public:
   Queue();
-  Queue(const Queue& other);
-  Queue& operator=(const Queue& other);
   ~Queue();
   void Push(Point element);
   Point Pop();
   Point Peek();
+  Point GetTail();
+  size_t GetSize() const;
   bool IsEmpty() const;
 
  private:
-  Point* data_;
+  Node* head_;
+  Node* tail_;
   size_t size_;
-  size_t front_;
-  size_t capacity_;
 };
 
 #endif // SANDPILE_QUEUE_HPP

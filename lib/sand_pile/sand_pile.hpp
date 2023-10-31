@@ -2,6 +2,7 @@
 #define SAND_PILE_HPP
 
 #include "lib/field/coordinates_field.hpp"
+#include "lib/field/queue.hpp"
 
 /** \n This class represents the Abelian sandpile model. It
  * contains methods for collapsing the given sandpile. */
@@ -18,6 +19,7 @@ class SandPile {
  private:
   static constexpr uint64_t kMaxGrainsInCell = 4;
   CoordinatesField pile_;
+  Queue unstable_;
   uint64_t current_iter_;
 
   bool Collapse();

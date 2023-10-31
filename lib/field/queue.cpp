@@ -4,64 +4,58 @@
 #include <limits>
 
 Queue::Queue() {
-  data_ = new Point[1];
   size_ = 0;
-  front_ = 0;
-  capacity_ = 1;
-}
-
-Queue::Queue(const Queue& other) {
-  data_ = new Point[other.capacity_];
-  size_ = other.size_;
-  front_ = other.front_;
-  capacity_ = other.capacity_;
-  std::memcpy(data_, other.data_, sizeof(Point) * size_);
-}
-
-Queue& Queue::operator=(const Queue& other) {
-  if (this != &other) {
-    return *this;
-  }
-
-  data_ = new Point[other.capacity_];
-  size_ = other.size_;
-  front_ = other.front_;
-  capacity_ = other.capacity_;
-  std::memcpy(data_, other.data_, sizeof(Point) * size_);
-
-  return *this;
+  head_ = nullptr;
+  tail_ = nullptr;
 }
 
 Queue::~Queue() {
-  delete[] data_;
+  while (size_ > 0) {
+    Pop();
+  }
 }
 
 void Queue::Push(Point element) {
-  if (size_ == capacity_) {
-    capacity_ *= 2;
+  Node* new_node = new Node{element, nullptr};
 
-    if (capacity_ > std::numeric_limits<uint32_t>::max()) {
-      capacity_ = std::numeric_limits<uint32_t>::max();
-    }
-
-    Point* new_data = new Point[capacity_];
-    std::memset(new_data, 0, sizeof(Point) * capacity_);
-    std::memcpy(new_data, data_, sizeof(Point) * size_);
-    delete[] data_;
-    data_ = new_data;
+  if (size_ != 0) {
+    tail_->next = new_node;
+  } else {
+    head_ = new_node;
   }
 
-  data_[size_] = element;
+  tail_ = new_node;
   ++size_;
 }
 
 Point Queue::Pop() {
+  if (size_ == 0) {
+    return {};
+  }
+
   --size_;
-  return data_[front_++];
+  Node* element = head_;
+  Point head_data = head_->data;
+  head_ = head_->next;
+  delete element;
+
+  return head_data;
 }
 
 Point Queue::Peek() {
-  return data_[front_];
+  if (size_ == 0) {
+    return {};
+  }
+
+  return head_->data;
+}
+
+Point Queue::GetTail() {
+  return tail_->data;
+}
+
+size_t Queue::GetSize() const {
+  return size_;
 }
 
 bool Queue::IsEmpty() const {
