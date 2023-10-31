@@ -9,6 +9,7 @@ LongArgument::LongArgument() {
   long_key_ = nullptr;
   value_ = 0;
   value_status_ = ArgumentParsingStatus::kNoArgument;
+  type_ = ArgumentType::kLongArgument;
 }
 
 LongArgument::LongArgument(const char* short_key, const char* long_key) {
@@ -16,6 +17,7 @@ LongArgument::LongArgument(const char* short_key, const char* long_key) {
   long_key_ = long_key;
   value_ = std::numeric_limits<uint64_t>::max();
   value_status_ = ArgumentParsingStatus::kNoArgument;
+  type_ = ArgumentType::kLongArgument;
 }
 
 void LongArgument::ValidateArgument(char* candidate, char* value, bool is_last) {
@@ -47,4 +49,8 @@ uint64_t LongArgument::GetValue() const {
 
 ArgumentParsingStatus LongArgument::GetValueStatus() const {
   return value_status_;
+}
+
+ArgumentType LongArgument::GetType() const {
+  return type_;
 }

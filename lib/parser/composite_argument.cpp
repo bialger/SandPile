@@ -7,6 +7,7 @@ CompositeArgument::CompositeArgument() {
   long_key_ = nullptr;
   value_ = kError;
   value_status_ = ArgumentParsingStatus::kNoArgument;
+  type_ = ArgumentType::kCompositeArgument;
 }
 
 CompositeArgument::CompositeArgument(const char* short_key, const char* long_key) {
@@ -14,6 +15,7 @@ CompositeArgument::CompositeArgument(const char* short_key, const char* long_key
   short_key_ = short_key;
   long_key_ = long_key;
   value_status_ = ArgumentParsingStatus::kNoArgument;
+  type_ = ArgumentType::kCompositeArgument;
 }
 
 CompositeArgument::CompositeArgument(const CompositeArgument& other) {
@@ -21,6 +23,7 @@ CompositeArgument::CompositeArgument(const CompositeArgument& other) {
   long_key_ = other.long_key_;
   value_ = other.value_;
   value_status_ = other.value_status_;
+  type_ = ArgumentType::kCompositeArgument;
 }
 
 CompositeArgument& CompositeArgument::operator=(const CompositeArgument& other) {
@@ -32,6 +35,7 @@ CompositeArgument& CompositeArgument::operator=(const CompositeArgument& other) 
   long_key_ = other.long_key_;
   value_ = other.value_;
   value_status_ = other.value_status_;
+  type_ = ArgumentType::kCompositeArgument;
 
   return *this;
 }
@@ -129,4 +133,8 @@ char* CompositeArgument::GetValue() const {
 
 ArgumentParsingStatus CompositeArgument::GetValueStatus() const {
   return value_status_;
+}
+
+ArgumentType CompositeArgument::GetType() const {
+  return type_;
 }

@@ -16,6 +16,7 @@ class CompositeArgument : Argument {
                         bool (* Validate)(char*), bool (* IsGood)(char*));
   char* GetValue() const;
   ArgumentParsingStatus GetValueStatus() const override;
+  ArgumentType GetType() const override;
 
  private:
   constexpr static char* const kError = nullptr;
@@ -23,6 +24,7 @@ class CompositeArgument : Argument {
   const char* long_key_;
   char* value_;
   ArgumentParsingStatus value_status_;
+  ArgumentType type_;
 };
 
 #endif //COMPOSITE_ARGUMENT_HPP_

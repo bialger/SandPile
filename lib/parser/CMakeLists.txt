@@ -8,6 +8,8 @@ add_library(lib_parser STATIC
         composite_argument.hpp
         long_argument.cpp
         long_argument.hpp
+        string_argument.cpp
+        string_argument.hpp
 )
 
 target_link_libraries(lib_parser PUBLIC lib_basic)

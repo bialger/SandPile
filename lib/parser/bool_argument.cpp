@@ -7,6 +7,7 @@ BoolArgument::BoolArgument() {
   long_key_ = nullptr;
   value_ = false;
   value_status_ = ArgumentParsingStatus::kNoArgument;
+  type_ = ArgumentType::kBoolArgument;
 }
 
 BoolArgument::BoolArgument(const char* short_key, const char* long_key) {
@@ -14,6 +15,7 @@ BoolArgument::BoolArgument(const char* short_key, const char* long_key) {
   long_key_ = long_key;
   value_ = false;
   value_status_ = ArgumentParsingStatus::kNoArgument;
+  type_ = ArgumentType::kBoolArgument;
 }
 
 void BoolArgument::ValidateArgument(char* candidate) {
@@ -29,4 +31,9 @@ bool BoolArgument::GetValue() const {
 
 ArgumentParsingStatus BoolArgument::GetValueStatus() const {
   return value_status_;
+}
+
+
+ArgumentType BoolArgument::GetType() const {
+  return type_;
 }

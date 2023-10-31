@@ -4,9 +4,10 @@
 #include <cstdint>
 
 #include "argument.hpp"
+#include "bool_argument.hpp"
 #include "composite_argument.hpp"
 #include "long_argument.hpp"
-#include "bool_argument.hpp"
+#include "string_argument.hpp"
 
 class ArgumentsParser {
  public:
