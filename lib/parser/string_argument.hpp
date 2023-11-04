@@ -8,7 +8,7 @@
 class StringArgument : Argument {
  public:
   StringArgument();
-  StringArgument(ArgumentInformation info);
+  explicit StringArgument(ArgumentInformation info);
   StringArgument(const StringArgument& other);
   StringArgument& operator=(const StringArgument& other);
   ~StringArgument() override;

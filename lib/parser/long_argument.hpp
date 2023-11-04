@@ -8,7 +8,7 @@
 class LongArgument : Argument {
  public:
   LongArgument();
-  LongArgument(ArgumentInformation info);
+  explicit LongArgument(ArgumentInformation info);
   void ValidateArgument(char* candidate, char* value, bool is_last);
   uint64_t GetValue() const;
   ArgumentParsingStatus GetValueStatus() const override;

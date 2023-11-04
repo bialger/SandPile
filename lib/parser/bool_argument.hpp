@@ -8,7 +8,7 @@
 class BoolArgument : Argument {
  public:
   BoolArgument();
-  BoolArgument(ArgumentInformation info);
+  explicit BoolArgument(ArgumentInformation info);
   void ValidateArgument(char* candidate);
   bool GetValue() const;
   ArgumentParsingStatus GetValueStatus() const override;

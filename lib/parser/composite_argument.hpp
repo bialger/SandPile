@@ -8,7 +8,7 @@
 class CompositeArgument : Argument {
  public:
   CompositeArgument();
-  CompositeArgument(ArgumentInformation info);
+  explicit CompositeArgument(ArgumentInformation info);
   CompositeArgument(const CompositeArgument& other);
   CompositeArgument& operator=(const CompositeArgument& other);
   ~CompositeArgument() override;
