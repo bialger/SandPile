@@ -14,8 +14,11 @@ struct Node {
 class Queue {
  public:
   Queue();
+  Queue(const Queue& other);
+  Queue& operator=(const Queue& other);
   ~Queue();
   void Push(Point element);
+  void AddAllElements(Queue& other) const;
   Point Pop();
   Point Peek();
   Point GetTail();

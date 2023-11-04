@@ -1,8 +1,5 @@
 #include "queue.hpp"
 
-#include <cstring>
-#include <limits>
-
 Queue::Queue() {
   size_ = 0;
   head_ = nullptr;
@@ -60,4 +57,32 @@ size_t Queue::GetSize() const {
 
 bool Queue::IsEmpty() const {
   return size_ == 0;
+}
+
+void Queue::AddAllElements(Queue& other) const {
+  Node* current = head_;
+
+  while (current != nullptr) {
+    other.Push(current->data);
+    current = current->next;
+  }
+}
+
+Queue::Queue(const Queue& other) {
+  size_ = 0;
+  head_ = nullptr;
+  tail_ = nullptr;
+  other.AddAllElements(*this);
+}
+Queue& Queue::operator=(const Queue& other) {
+  if (this == &other) {
+    return *this;
+  }
+
+  size_ = 0;
+  head_ = nullptr;
+  tail_ = nullptr;
+  other.AddAllElements(*this);
+
+  return *this;
 }
