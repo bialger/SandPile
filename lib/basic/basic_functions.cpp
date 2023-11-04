@@ -33,7 +33,7 @@ int64_t IntFromString(char* int_literal, int64_t limit, int8_t base) {
   /* C-style function error check: *end is a pointer to the beginning of the
    * part of the string that was not parsed, errno - C error handler, */
 
-  if (result < 0 || (result > limit && limit != -1)) {
+  if (result > limit && limit != -1) {
     result = -1;
   }
 
@@ -71,6 +71,28 @@ char* i64toa(int64_t value, char* str, int32_t base) {
   if (negative) {
     *--pos = '-';
   }
+
+  memcpy(str, pos, static_cast<size_t>(&buffer[64] - pos + 1));
+  return str;
+}
+
+char* ui64toa(uint64_t value, char* str, int32_t base) {
+  char buffer[65];
+  char* pos;
+  int8_t digit;
+
+  pos = &buffer[64];
+  *pos = '\0';
+
+  do {
+    digit = static_cast<int8_t>(value % static_cast<uint64_t>(base));
+    value = value / static_cast<uint64_t>(base);
+    if (digit < 10) {
+      *--pos = static_cast<char>('0' + digit);
+    } else {
+      *--pos = static_cast<char>('a' + digit - 10);
+    }
+  } while (value != 0L);
 
   memcpy(str, pos, static_cast<size_t>(&buffer[64] - pos + 1));
   return str;

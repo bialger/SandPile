@@ -26,11 +26,11 @@ bool TsvHandler::ImportTSV(char* filename, CoordinatesField& field) {
 
     std::from_chars(buffer_ptr, buffer_ptr + strlen(buffer_ptr),
                     current_point.x);
-    buffer_ptr += strlen(i64toa(static_cast<int64_t>(current_point.x),
+    buffer_ptr += strlen(i64toa(current_point.x,
                                 buffer, 10)) + 1;
     std::from_chars(buffer_ptr, buffer_ptr + strlen(buffer_ptr),
                     current_point.y);
-    buffer_ptr += strlen(i64toa(static_cast<int64_t>(current_point.y),
+    buffer_ptr += strlen(i64toa(current_point.y,
                                 buffer, 10)) + 1;
     std::from_chars(buffer_ptr, buffer_ptr + strlen(buffer_ptr),
                     current_element);
@@ -65,7 +65,7 @@ bool TsvHandler::ExportTSV(char* dirname, CoordinatesField& field, int64_t numbe
         file.write("\t", 1);
         file << i64toa(y, temp, 10);
         file.write("\t", 1);
-        file << i64toa(static_cast<int64_t>(field[{x, y}]), temp, 10);
+        file << ui64toa(field[{x, y}], temp, 10);
         file.write("\n", 1);
       }
     }

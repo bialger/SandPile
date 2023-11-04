@@ -29,6 +29,11 @@ int64_t IntFromString(char* int_literal, int64_t limit, int8_t base);
 
 char* i64toa(int64_t value, char* buffer, int32_t base);
 
+/** \n The ui64toa function converts anunsigned integer to a string in a
+ * specified base. Full analogy to the C function _iu64toa in Windows. */
+
+char* ui64toa(uint64_t value, char* str, int32_t base);
+
 bool IsWindows();
 
 /** \n The code validates the validity of a filename based on rules specific to
