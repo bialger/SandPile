@@ -7,8 +7,11 @@
 #include <cstdint>
 
 struct Node {
-  Point data;
-  Node* next;
+  Point data{};
+  Node* next = nullptr;
+
+  Node() = default;
+  explicit Node(const Point& data) : data(data) {}
 };
 
 class Queue {

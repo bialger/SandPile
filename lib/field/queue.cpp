@@ -13,7 +13,7 @@ Queue::~Queue() {
 }
 
 void Queue::Push(Point element) {
-  Node* new_node = new Node{element, nullptr};
+  Node* new_node = new Node(element);
 
   if (size_ != 0) {
     tail_->next = new_node;

@@ -6,8 +6,8 @@
 #include <limits>
 
 struct Point {
-  int16_t x;
-  int16_t y;
+  int16_t x = 0;
+  int16_t y = 0;
 };
 
 class CoordinatesField {
