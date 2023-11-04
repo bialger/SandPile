@@ -3,33 +3,26 @@
 
 #include <iostream>
 
-ArgumentsParser::ArgumentsParser() {
-  size_ = 1;
-  arguments_ = new Arguments[size_];
-}
-
-
 ArgumentsParser::ArgumentsParser(ArgumentInformation* arguments, size_t argument_count) {
   size_ = argument_count;
   arguments_ = new Arguments[size_];
 
   for (size_t i = 0; i < size_; ++i) {
+    arguments_[i] = Arguments{};
+    arguments_[i].info = arguments[i];
+
     switch (arguments[i].type) {
       case ArgumentType::kBoolArgument:
         arguments_[i].bool_argument = BoolArgument(arguments[i]);
-        arguments_[i].info = arguments[i];
         break;
       case ArgumentType::kCompositeArgument:
         arguments_[i].composite_argument = CompositeArgument(arguments[i]);
-        arguments_[i].info = arguments[i];
         break;
       case ArgumentType::kLongArgument:
         arguments_[i].long_argument = LongArgument(arguments[i]);
-        arguments_[i].info = arguments[i];
         break;
       case ArgumentType::kStringArgument:
         arguments_[i].string_argument = StringArgument(arguments[i]);
-        arguments_[i].info = arguments[i];
         break;
     }
   }

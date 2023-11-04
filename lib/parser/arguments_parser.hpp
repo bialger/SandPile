@@ -1,5 +1,5 @@
-#ifndef ARGUMENTS_PARSER_HPP
-#define ARGUMENTS_PARSER_HPP
+#ifndef ARGUMENTS_PARSER_HPP_
+#define ARGUMENTS_PARSER_HPP_
 
 #include <cstdint>
 #include <cstring>
@@ -24,7 +24,9 @@ struct Arguments {
 
 class ArgumentsParser {
  public:
-  ArgumentsParser();
+  ArgumentsParser() = delete;
+  ArgumentsParser(const ArgumentsParser& other) = delete;
+  ArgumentsParser& operator=(const ArgumentsParser& other) = delete;
   ~ArgumentsParser();
 
   /** \n Constructor that initializes the ArgumentsParser object, which checks
@@ -53,4 +55,4 @@ class ArgumentsParser {
   int8_t HandleErrors();
 };
 
-#endif // ARGUMENTS_PARSER_HPP
+#endif // ARGUMENTS_PARSER_HPP_

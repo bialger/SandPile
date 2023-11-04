@@ -24,7 +24,7 @@ int main(int32_t argc, char** argv) {
                   ArgumentType::kBoolArgument, false,
                   &IsValidFilename, &IsRegularFile};
 
-  ArgumentsParser arguments_parser = ArgumentsParser(arguments, kArgumentCount);
+  ArgumentsParser arguments_parser(arguments, kArgumentCount);
   int8_t exit_code = arguments_parser.ParseArguments(argv, argc);
 
   if (exit_code == 0 && !arguments_parser.GetBoolValue(5)) {
