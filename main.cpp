@@ -1,3 +1,4 @@
+#include <iostream>
 #include "lib/basic/basic_functions.hpp"
 #include "lib/parser/arguments_parser.hpp"
 #include "lib/sand_pile/sand_pile.hpp"
@@ -37,6 +38,8 @@ int main(int32_t argc, char** argv) {
   } else {
     PrintHelp();
   }
+
+  delete[] arguments;
 
   return exit_code;
 }
