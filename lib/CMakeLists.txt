@@ -4,8 +4,13 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
 
-set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    set(CMAKE_CXX_FLAGS_DEBUG "/MDd")
+    set(CMAKE_CXX_FLAGS_RELEASE "/O2")
+else ()
+    set(CMAKE_CXX_FLAGS_DEBUG "-g")
+    set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+endif()
 
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
