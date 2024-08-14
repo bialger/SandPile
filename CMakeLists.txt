@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 
 project(
     SandPile 
-    VERSION 0.1.0
+    VERSION 1.0
     DESCRIPTION "C++ Year 2023 Labwork3 - SandPile by bialger"
     LANGUAGES C CXX
 )
