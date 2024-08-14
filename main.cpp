@@ -1,9 +1,15 @@
 #include <iostream>
+#include <cstring>
 #include "lib/basic/basic_functions.hpp"
 #include "lib/parser/arguments_parser.hpp"
 #include "lib/sand_pile/sand_pile.hpp"
 
 int main(int32_t argc, char** argv) {
+  if (argc == 2 && (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0)) {
+    PrintHelp();
+    return 0;
+  }
+
   constexpr size_t kArgumentCount = 6;
   ArgumentInformation* arguments = new ArgumentInformation[kArgumentCount];
   arguments[0] = {"-i", "--input=", "Path to input file",
