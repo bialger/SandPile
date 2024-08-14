@@ -3,6 +3,7 @@
 
 #include <cstring>
 #include <filesystem>
+#include <iostream>
 
 BmpWriter::BmpWriter() {
   width_ = 0;
@@ -24,7 +25,7 @@ void BmpWriter::ExportField(char* dirname, CoordinatesField& field,
   file_.open(path, std::ios::out | std::ios::binary);
 
   if (!file_.is_open()) {
-    std::cout << "Can't open file: " << path.native() << std::endl;
+    std::cout << "Can't open file: " << path.string() << std::endl;
     return;
   }
 
