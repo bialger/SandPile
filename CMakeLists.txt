@@ -10,7 +10,11 @@ project(
 set(CMAKE_CXX_COMPILER_VERSION 20)
 set(CMAKE_CXX_STANDARD 20)
 
-if (CMAKE_CXX_COMPILER_ID NOT STREQUAL "MSVC")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    add_compile_options(
+            /Wall
+    )
+else ()
     add_compile_options(
             -Werror
 
@@ -31,6 +35,7 @@ if (CMAKE_CXX_COMPILER_ID NOT STREQUAL "MSVC")
             -Wsign-conversion
             -Wsign-promo
     )
+
 endif ()
 
 add_subdirectory(lib)
