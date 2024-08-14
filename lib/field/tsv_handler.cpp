@@ -53,7 +53,7 @@ bool TsvHandler::ExportTSV(char* dirname, CoordinatesField& field, int64_t numbe
   std::ofstream file(path, std::ios::out);
 
   if (!file.is_open()) {
-    std::cout << "Can't open file: " << path.native() << std::endl;
+    std::cout << "Can't open file: " << path.string() << std::endl;
     return false;
   }
 

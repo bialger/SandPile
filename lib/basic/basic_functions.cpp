@@ -148,7 +148,7 @@ bool IsDirectory(char* dirname) {
 }
 
 void PrintHelp() {
-  std::cout << "SandPile model version 0.1 by bialger.\n"
+  std::cout << "SandPile model version 1.0 by bialger.\n"
   << "SandPile model help page.\n"
   << "Usage: SandPile [OPTIONS]...\n"
   << "SandPile models an Abelian sandpile model. "
