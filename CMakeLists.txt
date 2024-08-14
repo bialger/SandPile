@@ -10,15 +10,25 @@ project(
 set(CMAKE_CXX_COMPILER_VERSION 20)
 set(CMAKE_CXX_STANDARD 20)
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    add_compile_options(
-            /Wall
-    )
-else ()
+if (NOT WIN32)
     add_compile_options(
             -Wall
-    )
+            -Wextra
+            -Wpedantic
 
+            -Wcast-align
+            -Wcast-qual
+            -Wconversion
+            -Wctor-dtor-privacy
+            -Wenum-compare
+            -Wfloat-equal
+            -Wnon-virtual-dtor
+            -Wold-style-cast
+            -Woverloaded-virtual
+            -Wredundant-decls
+            -Wsign-conversion
+            -Wsign-promo
+    )
 endif ()
 
 add_subdirectory(lib)
