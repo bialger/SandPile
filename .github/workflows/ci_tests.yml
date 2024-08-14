@@ -66,6 +66,7 @@ jobs:
         working-directory: ./cmake-build-release
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
+            cd Debug
             ./SandPile.exe --help
           else 
             ./SandPile --help
